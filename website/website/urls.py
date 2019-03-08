@@ -7,5 +7,6 @@ from website import views
 
 urlpatterns = [
     url(r'^$', views.Dashboard.as_view(), name="dashboard"),
+    url(r'^signup/$', views.SignUp.as_view(), name='signup'),
     url(r'^admin/', admin.site.urls)
 ]
