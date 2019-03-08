@@ -1,3 +1,4 @@
+import uuid as uuid
 from django.db import models
 
 
@@ -22,7 +23,9 @@ class DropOff(models.Model):
 
 
 class User(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, null=True)
+    surname = models.CharField(max_length=100, null=True)
+    email = models.CharField(max_length=100, editable=False, unique=True, default='')
     role = models.IntegerField(default=1)
     sellPoint = models.ForeignKey(SellPoint, null=True, default=None,
                                   on_delete=models.CASCADE, verbose_name="selling point (shop assistant)")
@@ -39,6 +42,8 @@ class User(models.Model):
 
 
 class Cup(models.Model):
+    # Unique id
+    id = models.IntegerField(primary_key=True, default=uuid.uuid4())
     size = models.IntegerField(default=0)
     timeIn = models.DateTimeField(null=True, default=None)
     timeEnd = models.DateTimeField(null=True, default=None)
