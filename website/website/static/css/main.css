@@ -1,19 +1,50 @@
+@font-face {
+ font-family:SBBWeb Bold;
+ src:url("https://cdn.app.sbb.ch/fonts/v1/SBBWeb-Bold.woff2") format("woff2"),url("https://cdn.app.sbb.ch/fonts/v1/SBBWeb-Bold.woff") format("woff");
+ font-display:swap
+}
+
+@font-face {
+ font-family:SBBWeb Light;
+ src:url("https://cdn.app.sbb.ch/fonts/v1/SBBWeb-Light.woff2") format("woff2"),url("https://cdn.app.sbb.ch/fonts/v1/SBBWeb-Light.woff") format("woff");
+ font-display:swap
+}
+
+@font-face {
+ font-family:SBBWeb Roman;
+ src:url("https://cdn.app.sbb.ch/fonts/v1/SBBWeb-Roman.woff2") format("woff2"),url("https://cdn.app.sbb.ch/fonts/v1/SBBWeb-Roman.woff") format("woff");
+ font-display:fallback
+}
+
+@font-face {
+ font-family:SBBWeb Thin;
+ src:url("https://cdn.app.sbb.ch/fonts/v1/SBBWeb-Thin.woff2") format("woff2"),url("https://cdn.app.sbb.ch/fonts/v1/SBBWeb-Thin.woff") format("woff");
+ font-display:swap
+}
+
+@font-face {
+ font-family:SBBWeb Ultralight;
+ src:url("https://cdn.app.sbb.ch/fonts/v1/SBBWeb-UltraLight.woff2") format("woff2"),url("https://cdn.app.sbb.ch/fonts/v1/SBBWeb-UltraLight.woff") format("woff");
+ font-display:swap
+}
+
 body{
-    font-family: "Helvetica", sans-serif;
+    font-family: "SBBWeb Roman", "Helvetica", sans-serif;
 }
 
 .navbar{
-    color: #fff;
-    background-color: #65656c;
+    color: #444;
+    background-color: #fff;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 .navbar a{
-    color: #fff;
+    color: #444;
     text-decoration: none;
 }
 
 .navbar a:hover{
-    color: #f3f3f3;
+    color: #c60018;
 }
 
 .navbar .title{
@@ -42,15 +73,26 @@ body{
     background-color: #74747a;
 }
 
+.navbar-header{
+    width: 100%;
+    margin: auto !important;
+}
+
 .navbar-logo{
     height: 51px;
     display: block;
-    float: left;
+    float: right;
     margin: 10px 15px 10px 0;
+    padding: 15px 0;
+}
+
+.navbar-logo svg{
+    height: 100%;
 }
 
 .navbar-text{
     margin: 0;
+    display: inline-block;
 }
 
 .margin-0{
@@ -561,8 +603,9 @@ body{
 
 .footer{
     padding: 20px 0;
-    color: #fff;
-    background-color: #65656c;
+    color: #444;
+    background-color: #fff;
+    border-top: 1px solid #e5e5e5;
 }
 
 .footer .version{
@@ -576,12 +619,12 @@ body{
 }
 
 .footer .made-by a{
-    color: #fff;
+    color: #444;
     text-decoration: none;
 }
 
 .footer .made-by a:hover{
-    color: #f3f3f3;
+    color: #c60018;
 }
 
 .footer .description{
