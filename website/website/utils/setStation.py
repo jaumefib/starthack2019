@@ -2,9 +2,45 @@ import json
 from pprint import pprint
 import uuid
 
+
+def abstract_traffic():
+    with open('../../../dataset/passagierfrequenz.json') as json_data:
+        d = json.load(json_data)
+        global total_stations
+        total_stations = []
+
+        reduction = 0.01
+        last_travelers = 200
+        min_cups = 20
+        for row in d:
+            res = {}
+            try:
+                station = row['fields']['bahnhof_haltestelle']
+                travelers = row['fields']['dtv']
+                [lat, lon] = row['fields']['geopos']
+
+            except KeyError:  # includes simplejson.decoder.JSONDecodeError
+                travelers = -1
+            if travelers != -1:
+                if travelers*reduction < 10:
+                    res[str(station)] = min_cups
+                else:
+                    res[str(station)] = int(travelers*reduction)
+
+                last_travelers = travelers
+            else:
+                if last_travelers*reduction < 10:
+                    res[str(station)] = min_cups
+                else:
+                    res[str(station)] = int(last_travelers*reduction)
+            res['lat'] = lat
+            res['lon'] = lon
+            total_stations.append(res)
+
+        print(total_stations)
 def make_data_stations():
 
-     with open('haltestelle-dataset-with-services.json') as f:
+     with open('../../../dataset/haltestelle-dataset-with-services.json') as f:
         data_stations_import = json.load(f)
 
      global data_stations
@@ -35,15 +71,12 @@ def make_data_stations():
 
 
      with open('data_out.json', 'w') as outfile:
-        json.dump(data_stations, outfile)
+        json.dump(data_stations, outfile, ensure_ascii=False)
 
 
 def Main():
 
-    make_data_stations()
-
-
-
+    abstract_traffic()
 
 if __name__ == '__main__':
     Main()
