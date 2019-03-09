@@ -56,7 +56,7 @@ def make_data_results():
 
     data_out.append(company)
 
-    for i in range(0, 4):
+    for i in range(0, len(total_stations)):
         station = {'fields': {}}
         station['pk'] = i
         station['model'] = 'website.Station'
@@ -87,7 +87,7 @@ def make_data_results():
 
 
     with open('../../../dataset/data_results.json', 'w') as outfile:
-        json.dump(data_out, outfile, ensure_ascii=False)
+        json.dump(data_out, outfile, sort_keys=False, ensure_ascii=False)
 
 def Main():
 
