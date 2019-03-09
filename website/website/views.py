@@ -3,9 +3,10 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
 from django.urls import reverse
+from django.core.exceptions import ObjectDoesNotExist
 
+from website import models
 from website.forms import SignUpForm
-
 
 def menu_tabs():
     t = [('Scan', reverse('scan'), False)]
@@ -62,7 +63,16 @@ class Scan(TabsView):
 
     def post(self, request, *args, **kwargs):
         qrcode = request.POST.get('qr_code')
-        print(qrcode)
+        user = request.user
+
+        try:
+         cup = models.Cup.objects.get(id = qrcode)
+         cup.assign_to_user(user)
+
+        except:
+            print("Ha petat amb " + qrcode)
+            return "Ha patat"
+
         return redirect("dashboard")
 
     def get_current_tabs(self):
