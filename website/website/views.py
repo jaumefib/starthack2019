@@ -44,6 +44,7 @@ class Dashboard(TabsView):
         identified = self.request.user.is_authenticated
         graphics_values = []
         labels = []
+        last_week = 0
         cups = models.Cup.objects.none()
 
         if identified:
@@ -56,11 +57,33 @@ class Dashboard(TabsView):
             if self.request.user.role == 2:
                 total_cups = usuari.sellPoint.cups_current
                 desired_cups = usuari.sellPoint.cups_desired
-                graphics_values = [1,2,3]
-                labels = ["A", "B", "C"]
+                graphics_values = []
+                labels = ["−7", "days"] + [""] * 2 + \
+                         ["−6", "days"] + [""] * 2 + \
+                         ["−5", "days"] + [""] * 2 + \
+                         ["−4", "days"] + [""] * 2 + \
+                         ["−3", "days"] + [""] * 2 + \
+                         ["−2", "days"] + [""] * 2 + \
+                         ["−1", "days"] + [""] * 2
+                now = datetime.date.today()
+                ago = now - datetime.timedelta(4)
 
-                models.Cup.objects.filter()
+                intervals = 28
+                longitud = (now - ago) / intervals
+                previous = ago
+                tiempo = ago + longitud
+                for i in range(intervals):
+                    how_many = models.History.objects \
+                        .filter(time2__gte=previous) \
+                        .filter(time2__lt=tiempo) \
+                        .count()
 
+                    graphics_values.append(how_many)
+
+                    previous = tiempo
+                    tiempo += longitud
+
+                last_week = sum(graphics_values)
 
         context.update({
             "balance": balance,
@@ -69,8 +92,9 @@ class Dashboard(TabsView):
             "total_cups": total_cups,
             "desired_cups": desired_cups,
             "message": "",
-            "graphics_values" : graphics_values,
-            "labels": labels
+            "graphics_values": graphics_values,
+            "labels": labels,
+            "last_week": last_week
         })
         return context
 

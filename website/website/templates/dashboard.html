@@ -30,15 +30,15 @@
                 </table>
             </div>
         {% else %}
-            <div class="col-sm-3 col-xs-6 padding-0 no-style-link">
+            <div class="col-lg-3 col-sm-6 col-xs-6 padding-0 no-style-link">
                 <h3 style="margin-bottom: 0;">Current stock</h3>
                 <h1>{{ total_cups }}</h1>
             </div>
-            <div class="col-sm-3 col-xs-6 padding-0 no-style-link">
+            <div class="col-lg-3 col-sm-6 col-xs-6 padding-0 no-style-link">
                 <h3 style="margin-bottom: 0;">Desired stock</h3>
                 <h1>{{ desired_cups }}</h1>
             </div>
-            <div class="col-sm-6 col-xs-12 padding-0 no-style-link">
+            <div class="col-lg-6 col-md-12 col-xs-12 padding-0 no-style-link">
 
                 <style>
                     .ct-series-a .ct-bar, .ct-series-a .ct-line, .ct-series-a .ct-point, .ct-series-a .ct-slice-donut {
@@ -73,8 +73,9 @@
 
                 </style>
 
-
+                <h3 style="margin-bottom: 0;">Last week's sales report</h3>
                 <div class="ct-chart"></div>
+                <p>{{ last_week }} cups were sold during last week.</p>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/chartist/0.11.0/chartist.js"></script>
                 <script>
                     new Chartist.Line('.ct-chart', {
