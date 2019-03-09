@@ -1,4 +1,6 @@
 import uuid as uuid
+from decimal import Decimal
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
@@ -8,6 +10,7 @@ class Station(models.Model):
     name = models.CharField(max_length=100)
     lat = models.FloatField()
     lon = models.FloatField()
+    importance = models.IntegerField(default=0)
 
 
 class Company(models.Model):
@@ -28,6 +31,7 @@ class CustomUser(AbstractUser):
     role = models.IntegerField(default=1)
     sellPoint = models.ForeignKey(SellPoint, null=True, default=None,
                                   on_delete=models.CASCADE, verbose_name="selling point (shop assistant)")
+    balance = models.DecimalField(decimal_places=2, max_digits=30, default=Decimal(0))
 
     def is_user(self):
         return self.role == 1
