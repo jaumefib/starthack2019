@@ -6,24 +6,36 @@
 {% block share_title_2 %}Log In{% endblock %}
 
 {% block content %}
-    <div class="col-sm-8 padding-0 no-style-link">
+    <div class="col-sm-8 col-md-offset-2 no-style-link">
         <h2>Log In</h2>
         <form method="post">
             {% csrf_token %}
             {% for field in form %}
-                <p>
+                <div class="form-group">
                     {{ field.label_tag }}<br>
                     {{ field }}
                     {% if field.help_text %}
-                        <small style="color: grey">{{ field.help_text }}</small>
+                        <label style="color: grey">{{ field.help_text }}</label>
                     {% endif %}
                     {% for error in field.errors %}
                         <p style="color: red">{{ error }}</p>
                     {% endfor %}
-                </p>
+                </div>
             {% endfor %}
-            <button type="submit">Submit</button>
-            <a href="{% url "signup" %}">New here? Sign Up!</a>
+            <button class="btn btn-primary btn-haskell" type="submit">Log in &nbsp;<i class="fa fa-arrow-right"></i></button>
+            <br><br> <a href="{% url "signup" %}">New here? Sign Up!</a>
         </form>
     </div>
+
+    <script>
+    var labels = document.getElementsByTagName("label");
+    for (var i = 0, len = labels.length; i < len; i++) {
+        labels[i].innerHTML = labels[i].innerHTML.replace(":", "")
+    }
+
+    var inputs = document.getElementsByTagName("input");
+    for (var i = 0, len = inputs.length; i < len; i++) {
+        inputs[i].classList.add("form-control")
+    }
+    </script>
 {% endblock %}

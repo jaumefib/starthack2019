@@ -6,7 +6,8 @@
 {% block share_title_2 %}Sign Up{% endblock %}
 
 {% block content %}
-    <div class="col-sm-8 padding-0 no-style-link">
+
+    <div class="col-sm-8 col-md-offset-2 no-style-link">
         <h2>Sign Up</h2>
         <form method="post">
             {% csrf_token %}
@@ -22,7 +23,22 @@
                     {% endfor %}
                 </p>
             {% endfor %}
-            <button type="submit">Submit</button>
+            <button class="btn btn-primary btn-haskell" type="submit">Sign up &nbsp;<i class="fa fa-arrow-right"></i></button>
+            <br><br> <a href="{% url "signup" %}">New here? Sign Up!</a>
         </form>
     </div>
+
+
+
+        <script>
+    var labels = document.getElementsByTagName("label");
+    for (var i = 0, len = labels.length; i < len; i++) {
+        labels[i].innerHTML = labels[i].innerHTML.replace(":", "")
+    }
+
+    var inputs = document.getElementsByTagName("input");
+    for (var i = 0, len = inputs.length; i < len; i++) {
+        inputs[i].classList.add("form-control")
+    }
+    </script>
 {% endblock %}

@@ -47,7 +47,7 @@ class Dashboard(TabsView):
             username = self.request.user
             usuari = models.CustomUser.objects.filter(username=username).first()
             balance = usuari.balance
-            balance = '{0:,.2f}'.format(balance) + "CHF"
+            balance = '{0:,.2f}'.format(balance)
             cups = models.Cup.objects.filter(user=self.request.user, dropOff=None).order_by('-time2', '-time3')
 
             if self.request.user.role == 2:
