@@ -780,7 +780,7 @@ input:checked + .slider:before {
 }
 
 .footer {
-    position: absolute;
+    position: sticky;
     bottom: 0;
     width: 100%;
 }
@@ -799,3 +799,91 @@ body {
   height:160px;
   margin-top:15px;
 }
+
+html, body {
+  height: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+}
+.navbar {
+  flex-shrink: 0;
+}
+.content.container {
+  flex: 1 0 auto;
+}
+.footer {
+  flex-shrink: 0;
+}
+
+.centro {
+                font-size: 2.25rem;
+                padding: 1em;
+                padding-right: 0.8em;
+                display: flex;
+                width: 14em;
+                height: 9rem;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                margin: auto;
+                align-items: center;
+                color: white;
+                font-weight: bold;
+                background-color: #ec0000e6;
+                text-align: center;
+                justify-content: center;
+            }
+
+.centro:hover, .centro:focus {
+        color: white;
+    text-decoration: none;
+}
+
+
+.centro:hover {
+    background-color: #ec0000
+}
+
+.centro:focus {
+    color: white;
+    text-decoration: none;
+        background-color: #ec0000;
+}
+
+
+
+@media (min-width: 1200px) {
+
+    .centro {
+        transform: scale(1.2)
+    }
+
+}
+
+@media (max-width: 480px) {
+    .centro {
+        transform: scale(0.8)
+    }
+
+   .navbar-logo {
+       float: none;
+       margin-bottom: 0.5em;
+       display: block;
+       text-align: center
+   }
+    .navbar-logo a {
+        margin-left: 3.5em
+    }
+    .subtitle {
+        display: none
+    }
+
+    .navbar-text.navbar-right {
+        opacity: 0.001
+    }
+}
+>>>>>>> 1609f9a2fac492ec096c1f980fc1b7eaa5c18e73

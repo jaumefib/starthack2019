@@ -1,7 +1,7 @@
 # starthack2019 -  CupFlow
 
 ## Why tackling coffee cup waste ?
-The issue is that in Switzerland alone everyday are used around 8 million disposable cups, enough to cover the distance between Basel and Vienna: 820km. Worldwide the usage elevates to 58 billion per year, wich is equivalent to the woodcutting of 32 millions of trees, the consumption of 100 billion liters of water and the emission at the atmosphere of 6.4 million tones of CO2, and only every 400th is recycled.
+The issue is that in Switzerland alone everyday are used around 8 million disposable cups, enough to cover the distance between Basel and Vienna: 820km. Worldwide the usage elevates to 58 billion per year, wich is equivalent to the woodcutting of 32 millions of trees, the consumption of 100 billion liters of water and the emission at the atmosphere of 6.4 million tones of CO2, and only every 400th of a cup is recycled.
 
 We strive to eliminate the giant pile of waste created by disposable coffee cups.
 
