@@ -58,7 +58,12 @@ class SignUp(TabsView):
 
 
 class Scan(TabsView):
-    template_name = 'dashboard.html'
+    template_name = 'user_scan.html'
+
+    def post(self, request, *args, **kwargs):
+        qrcode = request.POST.get('qr_code')
+        print(qrcode)
+        return redirect("dashboard")
 
     def get_current_tabs(self):
         return menu_tabs()
