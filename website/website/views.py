@@ -84,6 +84,7 @@ class Scan(TabsView):
         try:
          cup = models.Cup.objects.get(id = qrcode)
          cup.assign_to_user(user)
+         cup.sellPoint.station
 
         except:
             print("Ha petat amb " + qrcode)
