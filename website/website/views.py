@@ -10,7 +10,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from website import models
 from website.forms import SignUpForm
 
-import re
+from random import randint
 
 
 def menu_tabs():
@@ -234,6 +234,7 @@ class Scan(TabsView):
         try:
             if user.role == 4:
                 cup = models.Cup.objects.filter(id=qrcode)
+                cup.user.increment_balance()
                 cup.first().return_to_dropoff(user.dropOff)
                 cup.dropOff.increment_current()
             else:
@@ -244,7 +245,6 @@ class Scan(TabsView):
                         cup.sellPoint.decrement_current()
                     else:
                         cup.first().assign_to_user(user)
-                        user.increment_balance()
         except:
             pass
 

@@ -1,5 +1,4 @@
 from website import models
-import names
 
 
 def collect_cups():

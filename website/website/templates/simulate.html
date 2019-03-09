@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block head_title %}Dashboard{% endblock %}
+{% block share_title_1 %}Dashboard{% endblock %}
+{% block share_title_2 %}Dashboard{% endblock %}
+
+{% block content %}
+    {% if identified %}
+        {% if request.user.role == 1 %}
+            <div class="col-sm-4 padding-0 no-style-link">
+                <h3 style="margin-bottom: 0;">Current balance</h3>
+                <h1>{{ balance }} <b class="colored">CHF</b></h1>
+            </div>
+            <div class="col-sm-8 padding-0 no-style-link">
+                <h3 style="margin-bottom: 25px">Current loans</h3>
+                <table style="width:100%">
+                    <tr>
+                        <th>Station</th>
+                        <th>Collected time</th>
+                        <th>Checked-in time</th>
+                    </tr>
+                    {% for cup in cups %}
+                        <tr>
+                            <td>{{ cup.sellPoint.station.name }}</td>
+                            <td>{{ cup.time2 }}</td>
+                            <td>{{ cup.time3 }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% else %}
+            <div class="col-lg-3 col-sm-6 col-xs-6 padding-0 no-style-link">
+                <h3 style="margin-bottom: 0;">Current stock</h3>
+                <h1>{{ total_cups }}</h1>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-xs-6 padding-0 no-style-link">
+                <h3 style="margin-bottom: 0;">Desired stock</h3>
+                <h1>{{ desired_cups }}</h1>
+            </div>
+            <div class="col-lg-6 col-md-12 col-xs-12 padding-0 no-style-link">
+
+                <style>
+                    .ct-series-a .ct-bar, .ct-series-a .ct-line, .ct-series-a .ct-point, .ct-series-a .ct-slice-donut {
+                        stroke: #d70206;
+                    }
+
+                    .ct-point {
+                        stroke-width: 10px;
+                        stroke-linecap: round;
+                    }
+
+                    .ct-series-a .ct-area, .ct-series-a .ct-slice-donut-solid, .ct-series-a .ct-slice-pie {
+                        fill: #d70206;
+                    }
+
+                    .ct-area {
+                        stroke: none;
+                        fill-opacity: .1;
+                    }
+
+                    .ct-series-a .ct-bar, .ct-series-a .ct-line, .ct-series-a .ct-point, .ct-series-a .ct-slice-donut {
+                        stroke: #d70206;
+                    }
+
+                    .ct-line {
+                        stroke-width: 4px;
+                    }
+
+                    .ct-grid-background, .ct-line {
+                        fill: none;
+                    }
+
+                </style>
+
+                <h3 style="margin-bottom: 0;">Last week's sales report</h3>
+                <div class="ct-chart"></div>
+                <p>{{ last_week }} cups were sold during last week.</p>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/chartist/0.11.0/chartist.js"></script>
+                <script>
+                    new Chartist.Line('.ct-chart', {
+                        labels: {% autoescape off %}{{ labels }}{% endautoescape %},
+                        series: [
+                            {{ graphics_values }}
+                        ]
+                    }, {
+                        low: 0,
+                        fullWidth: true,
+
+                        showArea: true
+                    });
+                </script>
+            </div>
+        {% endif %}
+    {% else %}
+        <style>
+            body {
+                background: url("{% static "img/home.png" %}") no-repeat center center fixed;
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
+            }
+
+            .footer {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                background-color: #FFFFFFDD;
+            }
+
+            .navbar {
+                background-color: #FFFFFFE6
+            }
+        </style>
+    {% endif %}
+{% endblock %}

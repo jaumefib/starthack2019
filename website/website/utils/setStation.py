@@ -53,9 +53,14 @@ def make_cups():
     for i, station in enumerate(total_stations):
         total_cups = total_stations[i]['cups']
         for j in range(total_cups):
-            cup = {'model': 'website.Cup',
-                   'fields': {'sellPoint': i}
-                   }
+            if j < total_stations[i]['cups2']:
+                cup = {'model': 'website.Cup',
+                       'fields': {'sellPoint': i}
+                       }
+            else:
+                cup = {'model': 'website.Cup',
+                       'fields': {'dropOff': i}
+                       }
             data_out.append(cup)
             k += 1
 
@@ -84,6 +89,8 @@ def make_data_results():
         station['fields']['lon'] = total_stations[i]['lon']
 
         cups = total_stations[i]['cups']
+        total_stations[i]['cups2'] = int(0.75*cups*(randint(8, 10)/10))
+        cups2 = total_stations[i]['cups2']
         if cups >= 693:
             imp = 5
         elif cups >= 40:
@@ -107,7 +114,7 @@ def make_data_results():
         sellPoint['fields']['company'] = 0
         sellPoint['fields']['station'] = i
         sellPoint['fields']['cups_desired'] = cups
-        sellPoint['fields']['cups_current'] = cups
+        sellPoint['fields']['cups_current'] = cups2
         data_out.append(sellPoint)
 
         name = names.get_first_name()
@@ -115,7 +122,7 @@ def make_data_results():
         username = name.lower() + "." + surname.lower() + "." + str(randint(1, 2019))
         email = username + "@shop.ch"
         user = {'model': 'website.CustomUser',
-                'fields': {"username": username, 'role': 1, "first_name": name, "last_name": surname, "email": email, "sellPoint": sellPoint["fields"]["name"]}
+                'fields': {"username": username, 'role': 1, "first_name": name, "last_name": surname, "email": email, "sellPoint": sellPoint["pk"]}
                 }
         data_out.append(user)
 

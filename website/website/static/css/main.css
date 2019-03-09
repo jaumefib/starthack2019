@@ -780,7 +780,6 @@ input:checked + .slider:before {
 }
 
 .footer {
-    position: sticky;
     bottom: 0;
     width: 100%;
 }
@@ -789,9 +788,9 @@ body {
     background: #FAFAFA
 }
 
-.navbar {
+.navbar-home {
     border: none;
-    box-shadow: 0 1px 2px 0 #c1c1c1;
+    box-shadow: 0 0 50px 0 #11111188;
 }
 
 
@@ -813,22 +812,21 @@ body {
 }
 
 .centro {
-                font-size: 2.25rem;
-                padding: 1em;
+                font-size: 20px;
+                padding: 10px;
                 padding-right: 0.8em;
                 display: flex;
                 width: 14em;
-                height: 9rem;
+                height: 7rem;
                 position: absolute;
                 top: 0;
                 bottom: 0;
-                left: 0;
-                right: 0;
+                left: 5%;
                 margin: auto;
                 align-items: center;
                 color: white;
                 font-weight: bold;
-                background-color: #ec0000e6;
+                background-color: #ec0000;
                 text-align: center;
                 justify-content: center;
             }
@@ -854,7 +852,6 @@ body {
 @media (min-width: 1200px) {
 
     .centro {
-        transform: scale(1.2)
     }
 
 }

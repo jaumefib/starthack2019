@@ -107,7 +107,7 @@
                 }
             });
             var stations_values_desired = [];
-            {% for station in stations_current %}
+            {% for station in stations_desired %}
                 stations_values_desired.push({"name": "{{ station.name }}", "importance": {{ station.importance }}, "radius": {{ station.radius }}, "latitude": {{ station.latitude }}, "longitude": {{ station.longitude }}, "cups_current": {{ station.cups_current }}, "cups_desired": {{ station.cups_desired }}, "fillKey": "BUBBLE"});
             {% endfor %}
             bubble_map2.bubbles(stations_values_desired, {
