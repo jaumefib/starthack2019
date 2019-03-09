@@ -12,20 +12,26 @@ class Station(models.Model):
     lon = models.FloatField()
     importance = models.IntegerField(default=0)
 
+    def __str__(self):
+        return "Station '" + self.name + "'"
+
 
 class Company(models.Model):
     name = models.CharField(max_length=100)
+    def __str__(self):
+        return "Company '" + self.name + "'"
 
 
 class SellPoint(models.Model):
     name = models.CharField(max_length=100)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     station = models.ForeignKey(Station, on_delete=models.CASCADE)
+    def __str__(self):
+        return "SellPoint '" + self.name + "'"
 
 
 class DropOff(models.Model):
     station = models.ForeignKey(Station, on_delete=models.CASCADE)
-
 
 class CustomUser(AbstractUser):
     role = models.IntegerField(default=1)
@@ -42,6 +48,7 @@ class CustomUser(AbstractUser):
 
     def is_admin(self):
         return self.role == 999
+
 
 
 class Cup(models.Model):
