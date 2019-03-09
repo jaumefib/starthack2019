@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bootstrap3'
+    'bootstrap3',
+    'website'
 ]
 
 MIDDLEWARE = [
@@ -51,6 +52,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'website.urls'
+AUTH_USER_MODEL = 'website.CustomUser'
 
 TEMPLATES = [
     {
@@ -124,3 +126,5 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, os.path.join('website', "static")),
 ]
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+
+LOGIN_REDIRECT_URL = '/'

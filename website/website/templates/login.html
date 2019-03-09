@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load staticfiles%}
+
+{% block head_title %}Log In{% endblock %}
+{% block share_title_1 %}Log In{% endblock %}
+{% block share_title_2 %}Log In{% endblock %}
+
+{% block content %}
+    <div class="col-sm-12 padding-0 page-location">
+    </div>
+    <div class="col-sm-8 padding-0 no-style-link">
+        <h2>Log In</h2>
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <p>
+                    {{ field.label_tag }}<br>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small style="color: grey">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <p style="color: red">{{ error }}</p>
+                    {% endfor %}
+                </p>
+            {% endfor %}
+            <button type="submit">Submit</button>
+            <a href="{% url "signup" %}">New here? Sign Up!</a>
+        </form>
+    </div>
+{% endblock %}
