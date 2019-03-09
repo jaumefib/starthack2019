@@ -110,6 +110,15 @@ def make_data_results():
         sellPoint['fields']['cups_current'] = cups
         data_out.append(sellPoint)
 
+        name = names.get_first_name()
+        surname = names.get_last_name()
+        username = name.lower() + "." + surname.lower() + "." + str(randint(1, 2019))
+        email = username + "@shop.ch"
+        user = {'model': 'website.CustomUser',
+                'fields': {"username": username, 'role': 1, "first_name": name, "last_name": surname, "email": email, "sellPoint": sellPoint["fields"]["name"]}
+                }
+        data_out.append(user)
+
         dropOff = {'fields': {}}
         dropOff['pk'] = i
         dropOff['model'] = 'website.DropOff'

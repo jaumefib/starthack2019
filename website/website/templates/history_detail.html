@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
-{% block head_title %}Status{% endblock %}
-{% block share_title_1 %}Status{% endblock %}
-{% block share_title_2 %}Status{% endblock %}
+{% block head_title %}History detail{% endblock %}
+{% block share_title_1 %}History detail{% endblock %}
+{% block share_title_2 %}History detail{% endblock %}
 
 {% block content %}
     <div class="col-sm-12 padding-0">
@@ -11,22 +11,15 @@
     </div>
     <div class="col-sm-8 padding-0 no-style-link">
         <div class="col-sm-8 padding-0">
-            <h3 id="map-title" style="margin-top: 10px;">Available stock</h3>
-        </div>
-        <div class="col-sm-4 padding-0">
-            <label class="switch">
-                <input type="checkbox">
-                <span id="change-map" class="slider"></span>
-            </label>
+            <h3 id="map-title" style="margin-top: 10px;">Cup trip</h3>
         </div>
         <script src="http://d3js.org/d3.v3.min.js"></script>
         <script src="http://d3js.org/topojson.v1.min.js"></script>
         <script src="{% static 'js/datamaps.all.min.js' %}"></script>
-        <div id="switzerland1" style="width: 100%; height: 500px;"></div>
-        <div id="switzerland2" style="width: 100%; height: 500px;"></div>
+        <div id="map_cup" style="width: 100%; height: 500px;"></div>
         <script>
             var bubble_map = new Datamap({
-                element: document.getElementById('switzerland1'),
+                element: document.getElementById('map_cup'),
                 scope: 'cantons',
                 geographyConfig: {
                     popupOnHover: false,
@@ -47,7 +40,7 @@
                 },
                 setProjection: function (element, options) {
                     var projection, path;
-                    var width = document.getElementById("switzerland1").offsetWidth, height = 500;
+                    var width = document.getElementById("map_cup").offsetWidth, height = 500;
                     projection = d3.geo.albers()
                         .rotate([0, 0])
                         .center([8.3, 46.8])
@@ -58,61 +51,6 @@
                         .projection(projection);
 
                     return {path: path, projection: projection};
-                }
-            });
-            var stations_values_current = [];
-            {% for station in stations_current %}
-                stations_values_current.push({"name": "{{ station.name }}", "importance": {{ station.importance }}, "radius": {{ station.radius }}, "latitude": {{ station.latitude }}, "longitude": {{ station.longitude }}, "cups_current": {{ station.cups_current }}, "cups_desired": {{ station.cups_desired }}, "fillKey": "BUBBLE"});
-            {% endfor %}
-            bubble_map.bubbles(stations_values_current, {
-                popupTemplate: function (geo, data) {
-                    return "<div class='hoverinfo'>" + data.name + "</br>Current: " + data.cups_current + "</br>Desired: " + data.cups_desired + "</div>";
-                }
-            });
-
-
-            var bubble_map2 = new Datamap({
-                element: document.getElementById('switzerland2'),
-                scope: 'cantons',
-                geographyConfig: {
-                    popupOnHover: false,
-                    highlightOnHover: false,
-                    borderColor: '#444',
-                    borderWidth: 0.5,
-                    dataUrl: '{% static 'json/readme-swiss.json' %}'
-                    //dataJson: topoJsonData
-                },
-                bubblesConfig: {
-                    highlightFillColor: "#ec0000",
-                    borderWidth: 0,
-                    fillOpacity: 0.35
-                },
-                fills: {
-                    'BUBBLE': '#ec0000',
-                    defaultFill: '#dddddd'
-                },
-                setProjection: function (element, options) {
-                    var projection, path;
-                    var width = document.getElementById("switzerland2").offsetWidth, height = 500;
-                    projection = d3.geo.albers()
-                        .rotate([0, 0])
-                        .center([8.3, 46.8])
-                        .scale(12000)
-                        .translate([width / 2, height / 2])
-                        .precision(.1);
-                    path = d3.geo.path()
-                        .projection(projection);
-
-                    return {path: path, projection: projection};
-                }
-            });
-            var stations_values_desired = [];
-            {% for station in stations_current %}
-                stations_values_desired.push({"name": "{{ station.name }}", "importance": {{ station.importance }}, "radius": {{ station.radius }}, "latitude": {{ station.latitude }}, "longitude": {{ station.longitude }}, "cups_current": {{ station.cups_current }}, "cups_desired": {{ station.cups_desired }}, "fillKey": "BUBBLE"});
-            {% endfor %}
-            bubble_map2.bubbles(stations_values_desired, {
-                popupTemplate: function (geo, data) {
-                    return "<div class='hoverinfo'>" + data.name + "</br>Current: " + data.cups_current + "</br>Desired: " + data.cups_desired + "</div>";
                 }
             });
         </script>
