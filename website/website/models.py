@@ -42,7 +42,7 @@ class CustomUser(AbstractUser):
 
 class Cup(models.Model):
     # Unique id
-    id = models.IntegerField(primary_key=True, default=uuid.uuid4())
+    id = models.IntegerField(primary_key=True, default=uuid.uuid4)
     size = models.IntegerField(default=0)
     timeIn = models.DateTimeField(null=True, default=None)
     timeEnd = models.DateTimeField(null=True, default=None)
