@@ -133,6 +133,7 @@ class Cup(models.Model):
 
         self.save()
 
+        assert (self.sellPoint is None)
         assert (self.user is not None)
         assert (self.dropOff is not None)
 
