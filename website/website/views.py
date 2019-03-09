@@ -10,6 +10,7 @@ from website.forms import SignUpForm
 
 import re
 
+
 def menu_tabs():
     t = [('Scan', reverse('scan'), False)]
     return t
@@ -83,11 +84,14 @@ class Status(TabsView):
             for sellpoint in models.SellPoint.objects.filter(station=station).all():
                 cups_current += sellpoint.cups_current
                 cups_desired += sellpoint.cups_desired
-            list.append(stations_values_current, {"name": station.name, "importance": station.importance, "radius": 0.01*pow((6-station.importance), 2.25)*cups_current, "longitude": station.lon, "latitude": station.lat, "cups_current": cups_current, "cups_desired": cups_desired})
+            list.append(stations_values_current, {"name": station.name, "importance": station.importance,
+                                                  "radius": 0.01 * pow((6 - station.importance), 2.25) * cups_current,
+                                                  "longitude": station.lon, "latitude": station.lat,
+                                                  "cups_current": cups_current, "cups_desired": cups_desired})
             list.append(stations_values_desired, {"name": station.name, "importance": station.importance,
-                                              "radius": 0.01 * pow((6 - station.importance), 2.25) * cups_desired,
-                                              "longitude": station.lon, "latitude": station.lat,
-                                              "cups_current": cups_current, "cups_desired": cups_desired})
+                                                  "radius": 0.01 * pow((6 - station.importance), 2.25) * cups_desired,
+                                                  "longitude": station.lon, "latitude": station.lat,
+                                                  "cups_current": cups_current, "cups_desired": cups_desired})
         context.update({
             "movements": movements,
             "stations_current": stations_values_current,
@@ -124,6 +128,24 @@ class History(TabsView):
             'history': history,
         })
         return context
+
+
+class HistoryId(TabsView):
+    template_name = 'history_id.html'
+
+    def get_back_url(self):
+        return 'javascript:history.back()'
+
+    def get_queryset(self):
+        id_ = self.kwargs['user_id']
+        history = models.History.objects.filter(id=id_)
+
+        if len(history) != 0:
+            one_history = history.first()
+
+        else:
+            return None
+
 
 class SignUp(TabsView):
     template_name = 'signup.html'

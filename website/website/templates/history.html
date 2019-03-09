@@ -18,11 +18,11 @@
             </tr>
             {% for histo in history %}
                 <tr>
-                    <td>{{ histo.sellPoint.station.name }}</td>
-                    <td>{{ histo.dropOff.station.name }}</td>
-                    <td>{{ histo.time2 }}</td>
-                    <td>{{ histo.time3 }}</td>
-                    <td>{{ histo.time4 }}</td>
+                    <td> <a href="{% url 'historyid' histo.id %}"> {{ histo.sellPoint.station.name }} </a> </td>
+                    <td><a href="{% url 'historyid' histo.id %}"> {{ histo.dropOff.station.name }} </a> </td>
+                    <td><a href="{% url 'historyid' histo.id %}"> {{ histo.time2 }} </a> </td>
+                    <td><a href="{% url 'historyid' histo.id %}"> {{ histo.time3 }} </a> </td>
+                    <td><a href="{% url 'historyid' histo.id %}"> {{ histo.time4 }} </a> </td>
                 </tr>
             {% endfor %}
         </table>

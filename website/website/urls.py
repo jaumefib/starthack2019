@@ -14,5 +14,6 @@ urlpatterns = [
     url(r'^scan/$', views.Scan.as_view(), name='scan'),
     url(r'^status/$', views.Status.as_view(), name="status"),
     url(r'^history/$', views.History.as_view(), name="history"),
+    url(r'^history/(?P<user_id>[\w-]+)/$', views.HistoryId.as_view(), name='historyid'),
     url(r'^admin/', admin.site.urls)
 ]
