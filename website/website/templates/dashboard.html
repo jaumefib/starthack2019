@@ -6,25 +6,31 @@
 {% block share_title_2 %}Dashboard{% endblock %}
 
 {% block content %}
-    <div class="col-sm-4 padding-0 no-style-link">
+    {% if identified %}
+        <div class="col-sm-4 padding-0 no-style-link">
         <h3 style="margin-bottom: 0;">Current balance</h3>
         <h1 style="margin-top: 10px;">{{ balance }}</h1>
-    </div>
-    <div class="col-sm-8 padding-0 no-style-link">
-        <h3 style="margin-bottom: 25px; margin-top: 10px;">Current loans</h3>
-        <table style="width:100%">
-            <tr>
-                <th>Station</th>
-                <th>Collected time</th>
-                <th>Checked-in time</th>
-            </tr>
-            {% for cup in cups %}
+        {% if request.user.role == 2 %}
+            <h3 style="margin-bottom: 0;">Number of available cups</h3>
+            <h1 style="margin-top: 10px;">{{ total_cups }}</h1>
+        {% endif %}
+        </div>
+        <div class="col-sm-8 padding-0 no-style-link">
+            <h3 style="margin-bottom: 25px; margin-top: 10px;">Current loans</h3>
+            <table style="width:100%">
                 <tr>
-                    <td>{{ cup.sellPoint.station.name }}</td>
-                    <td>{{ cup.time2 }}</td>
-                    <td>{{ cup.time3 }}</td>
+                    <th>Station</th>
+                    <th>Collected time</th>
+                    <th>Checked-in time</th>
                 </tr>
-            {% endfor %}
-        </table>
-    </div>
+                {% for cup in cups %}
+                    <tr>
+                        <td>{{ cup.sellPoint.station.name }}</td>
+                        <td>{{ cup.time2 }}</td>
+                        <td>{{ cup.time3 }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% endif %}
 {% endblock %}

@@ -38,8 +38,12 @@ class DropOff(models.Model):
 
 class CustomUser(AbstractUser):
     role = models.IntegerField(default=1)
-    sellPoint = models.ForeignKey(SellPoint, null=True, default=None,
-                                  on_delete=models.CASCADE, verbose_name="selling point (shop assistant)")
+    sellPoint = models.ForeignKey(SellPoint,
+                                  null=True,
+                                  blank=True,
+                                  default=None,
+                                  on_delete=models.CASCADE,
+                                  verbose_name="selling point (shop assistant)")
     balance = models.FloatField(default=0.0)
 
     def is_user(self):

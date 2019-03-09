@@ -22,17 +22,38 @@ class TabsView(TemplateView):
 class Dashboard(TabsView):
     template_name = 'dashboard.html'
 
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect("login")
+        return render(request, "dashboard.html", self.get_context_data())
+
     def get_current_tabs(self):
         return menu_tabs()
 
     def get_context_data(self, **kwargs):
         context = super(Dashboard, self).get_context_data(**kwargs)
-        balance = self.request.user.balance
-        balance = '{0:,.2f}'.format(balance) + "CHF"
-        cups = models.Cup.objects.filter(user=self.request.user, dropOff=None)
+
+        balance = 0.0
+        total_cups = 0
+        identified = self.request.user.is_authenticated
+        cups = models.Cup.objects.none()
+
+        if identified:
+            username = self.request.user
+            usuari = models.CustomUser.objects.filter(username=username).first()
+            balance = usuari.balance
+            balance = '{0:,.2f}'.format(balance) + "CHF"
+            cups = models.Cup.objects.filter(user=self.request.user, dropOff=None)
+
+            if self.request.user.role == 2:
+                my_sell_point = usuari.sellPoint
+                total_cups = models.Cup.objects.filter(sellPoint = my_sell_point).count()
+
         context.update({
             "balance": balance,
-            "cups": cups
+            "cups": cups,
+            "identified": identified,
+            "total_cups": total_cups
         })
         return context
 
