@@ -778,3 +778,18 @@ input:checked + .slider:before {
 ::selection {
   background: #fbb; /* WebKit/Blink Browsers */
 }
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+body {
+    background: #FAFAFA
+}
+
+.navbar {
+    border: none;
+    box-shadow: 0 1px 2px 0 #c1c1c1;
+}

@@ -1,6 +1,8 @@
 import json
 from pprint import pprint
 import uuid
+import names
+from random import randint
 
 
 def abstract_traffic():
@@ -119,10 +121,32 @@ def make_data_results():
         json.dump(data_out, outfile, sort_keys=False, ensure_ascii=False)
 
 
+def make_users():
+    data_out = []
+    k = 0
+    for i, station in enumerate(total_stations):
+        total_cups = total_stations[i]['cups']
+        for j in range(int(0.1*(total_cups))):
+            name = names.get_first_name()
+            surname = names.get_last_name()
+            username = name.lower() + "." + surname.lower() + "." + str(randint(1, 2019))
+            email = username + "@sbb.ch"
+            user = {'model': 'website.CustomUser',
+                   'fields': {"username": username, 'role': 1, "name": name, "surname": surname, "email": email}
+                   }
+            data_out.append(user)
+            k += 1
+
+    with open('../../../dataset/data_users.json', 'w') as outfile:
+        json.dump(data_out, outfile, sort_keys=False, ensure_ascii=False)
+
+
+
 def Main():
     abstract_traffic()
     make_data_results()
     make_cups()
+    make_users()
 
 
 if __name__ == '__main__':

@@ -3,3 +3,4 @@ django-bootstrap3
 pytz==2018.9
 reverse==0.1.0
 gunicorn==19.6.0
+names
