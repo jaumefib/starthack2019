@@ -25,6 +25,10 @@ class Dashboard(TabsView):
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect("login")
+        if request.user.role == 3:
+            return redirect("status")
+        elif request.user.role == 4:
+            return redirect("scan")
         return render(request, "dashboard.html", self.get_context_data())
 
     def get_current_tabs(self):
@@ -35,6 +39,7 @@ class Dashboard(TabsView):
 
         balance = 0.0
         total_cups = 0
+        desired_cups = 0
         identified = self.request.user.is_authenticated
         cups = models.Cup.objects.none()
 
@@ -46,14 +51,15 @@ class Dashboard(TabsView):
             cups = models.Cup.objects.filter(user=self.request.user, dropOff=None).order_by('-time2', '-time3')
 
             if self.request.user.role == 2:
-                my_sell_point = usuari.sellPoint
-                total_cups = models.Cup.objects.filter(sellPoint = my_sell_point).count()
+                total_cups = usuari.sellPoint.cups_current
+                desired_cups = usuari.sellPoint.cups_desired
 
         context.update({
             "balance": balance,
             "cups": cups,
             "identified": identified,
             "total_cups": total_cups,
+            "desired_cups": desired_cups,
             "message": ""
         })
         return context
@@ -134,15 +140,19 @@ class Scan(TabsView):
                 if user.role == 2:
                     cup.first().sell_cup()
                     cup.sellPoint.decrement_current()
+                elif user.role == 4:
+                    cup.first().return_to_dropoff(user.dropOff)
+                    cup.dropOff.increment_current()
                 else:
                     cup.first().assign_to_user(user)
                     user.increment_balance()
         except:
             pass
 
-        balance = user.balance
-        balance = '{0:,.2f}'.format(balance) + "CHF"
-        return redirect("dashboard")
+        if user.role == 1:
+            return redirect("dashboard")
+        else:
+            return redirect("scan")
 
     def get_current_tabs(self):
         return menu_tabs()

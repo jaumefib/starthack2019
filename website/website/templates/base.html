@@ -59,7 +59,9 @@
                     <div class="col-md-12 padding-0 margin-bottom-half">
                         <ul class="menu-top">
                             {% if request.user.is_authenticated %}
-                                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                                {% if request.user.role != 4 %}
+                                    <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                                {% endif %}
                                 <li><a href="{% url 'scan' %}">Scan cup</a></li>
                                 {% if request.user.role == 3 %}
                                     <li><a href="{% url 'status' %}">Status</a></li>

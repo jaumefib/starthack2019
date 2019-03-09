@@ -43,6 +43,15 @@ class SellPoint(models.Model):
 
 class DropOff(models.Model):
     station = models.ForeignKey(Station, on_delete=models.CASCADE)
+    cups_current = models.IntegerField(default=50)
+
+    def decrement_current(self):
+        self.cups_current = self.cups_current - 1
+        self.save()
+
+    def increment_current(self):
+        self.cups_current = self.cups_current + 1
+        self.save()
 
 class CustomUser(AbstractUser):
     role = models.IntegerField(default=1)
@@ -52,6 +61,12 @@ class CustomUser(AbstractUser):
                                   default=None,
                                   on_delete=models.CASCADE,
                                   verbose_name="selling point (shop assistant)")
+    dropOff = models.ForeignKey(DropOff,
+                                  null=True,
+                                  blank=True,
+                                  default=None,
+                                  on_delete=models.CASCADE,
+                                  verbose_name="dropoff point (return machine)")
     balance = models.FloatField(default=0.0)
 
     def is_user(self):
@@ -104,7 +119,6 @@ class Cup(models.Model):
         self.time4 = datetime.now()
         self.save()
 
-        assert (self.sellPoint is None)
         assert (self.user is not None)
         assert (self.dropOff is not None)
 
