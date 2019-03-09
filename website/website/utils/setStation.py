@@ -94,8 +94,6 @@ def make_data_results():
         else:
             imp = 1
         station['fields']['importance'] = imp
-        station['fields']['cups_desired'] = cups
-        station['fields']['cups_current'] = cups
 
         data_out.append(station)
 
@@ -107,6 +105,8 @@ def make_data_results():
         sellPoint['fields']['name'] = name
         sellPoint['fields']['company'] = 0
         sellPoint['fields']['station'] = i
+        sellPoint['fields']['cups_desired'] = cups
+        sellPoint['fields']['cups_current'] = cups
         data_out.append(sellPoint)
 
         dropOff = {'fields': {}}
