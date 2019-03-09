@@ -74,7 +74,7 @@
                         </ul>
 
                         {% if request.user.is_authenticated %}
-                            <div class="navbar-text navbar-right">Hi, {{ request.user.username }}! <a href="{% url 'logout' %}">Click here to logout</a></div>
+                            <div class="navbar-text navbar-right">Hi, {{ request.user.username }}! <a href="{% url 'logout' %}">Click here to log out</a></div>
                         {% else %}
                             <div class="navbar-text navbar-right"><a href="{% url 'login' %}">Log In</a></div>
                         {% endif %}
@@ -106,5 +106,6 @@
             </div>
         </footer>
     {% endblock %}
-    {% block javascript %}{% endblock %}
+    {% block javascript %}
+    {% endblock %}
 </html>
