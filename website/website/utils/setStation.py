@@ -23,60 +23,77 @@ def abstract_traffic():
                 travelers = -1
             if travelers != -1:
                 if travelers*reduction < 10:
-                    res[str(station)] = min_cups
+                    res['name'] = str(station)
+                    res['cups'] = min_cups
                 else:
-                    res[str(station)] = int(travelers*reduction)
+                    res['name'] = str(station)
+                    res['cups'] = int(travelers*reduction)
 
                 last_travelers = travelers
             else:
                 if last_travelers*reduction < 10:
-                    res[str(station)] = min_cups
+                    res['name'] = str(station)
+                    res['cups'] = min_cups
                 else:
-                    res[str(station)] = int(last_travelers*reduction)
+                    res['name'] = str(station)
+                    res['cups'] = int(travelers*reduction)
             res['lat'] = lat
             res['lon'] = lon
+            #print(lat, lon)
             total_stations.append(res)
 
-        print(total_stations)
-def make_data_stations():
+        #print(total_stations)
 
-     with open('../../../dataset/haltestelle-dataset-with-services.json') as f:
-        data_stations_import = json.load(f)
+def make_data_results():
 
-     global data_stations
-     data_stations = {"stations": []}
+    data_out = []
 
-     subdata = {}
-     station = data_stations_import[0]['fields']['stationsbezeichnung']
-     subdata['name'] = station
-     subdata['id'] = uuid.uuid3(uuid.NAMESPACE_DNS, str(0))
-     data_stations['stations'].append(subdata)
+    company = {'fields': {}}
+    company['pk'] = 0
+    company['model'] = 'website.Company'
 
-     for i in range(1, len(data_stations_import)):
-        subdata = {}
-        station = data_stations_import[i]['fields']['stationsbezeichnung']
-        #lon =
-        #lat =
-        for j in range(0, len(data_stations['stations'])):
+    company['fields']['name'] = 'company0'
 
-            if not station in data_stations['stations'][j].values():
-                #print('hello')
-                subdata['name'] = station
-                subdata['id'] = uuid.uuid3(uuid.NAMESPACE_DNS, str(key))
-                data_stations['stations'].append(subdata)
+    data_out.append(company)
+
+    for i in range(0, len(total_stations)):
+        station = {'fields': {}}
+        station['pk'] = i
+        station['model'] = 'website.Station'
+
+        station['fields']['name'] = total_stations[i]['name']
+        station['fields']['lat'] = total_stations[i]['lat']
+        station['fields']['lon'] = total_stations[i]['lon']
+        station['fields']['importance'] = 0
+        data_out.append(station)
 
 
-     #json_data = json.dumps(data_stations)
-     #pprint(json_data['stations'][0])
+        sellPoint = {'fields': {}}
+        sellPoint['pk'] = i
+        sellPoint['model'] = 'website.SellPoint'
+
+        name = 'sellpoint' + str(i)
+        sellPoint['fields']['name'] = name
+        sellPoint['fields']['company'] = 0
+        sellPoint['fields']['station'] = i
+        data_out.append(sellPoint)
+
+        dropOff = {'fields': {}}
+        dropOff['pk'] = i
+        dropOff['model'] = 'website.DropOff'
+
+        dropOff['fields']['station'] = i
+        data_out.append(dropOff)
 
 
-     with open('data_out.json', 'w') as outfile:
-        json.dump(data_stations, outfile, ensure_ascii=False)
-
+    with open('../../../dataset/data_results.json', 'w') as outfile:
+        json.dump(data_out, outfile, sort_keys=False, ensure_ascii=False)
 
 def Main():
 
     abstract_traffic()
+
+    make_data_results()
 
 if __name__ == '__main__':
     Main()
