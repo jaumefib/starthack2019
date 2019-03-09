@@ -120,16 +120,38 @@
     <div class="col-sm-4 padding-0 no-style-link">
         <h3 style="margin-bottom: 25px; margin-top: 10px;">Suggested logistics</h3>
         <table style="width:100%">
-            <tr>
-                <th>Origin</th>
-                <th>Destination</th>
-                <th>Quantity</th>
-            </tr>
-            {% for movement in movements %}
+            {% for histo in historyid %}
                 <tr>
-                    <td>{{ movement.origin.name }}</td>
-                    <td>{{ movement.destination.name }}</td>
-                    <td>{{ movement.quantity }}</td>
+                    <td>Origin</td>
+                    <td>{{ histo.sellPoint.station.name }}</td>
+                </tr>
+                <tr>
+                    <td>Destination</td>
+                    <td>{{ histo.dropOff.station.name  }}</td>
+                </tr>
+                <tr>
+                    <th>Collected time</th>
+                    <th>{{ histo.time2 }}</th>
+                </tr>
+                <tr>
+                    <td>Checked-in time</td>
+                    <td>{{ histo.time3 }}</td>
+                </tr>
+                <tr>
+                    <td>Returned time</td>
+                    <td>{{ histo.time4 }}</td>
+                </tr>
+                <tr>
+                    <td>Company</td>
+                    <td>{{ histo.sellPoint.company }}</td>
+                </tr>
+                 <tr>
+                    <td>Store</td>
+                    <td>{{ histo.sellPoint.name }}</td>
+                </tr>
+                <tr>
+                    <td>Cup size</td>
+                    <td>{{ histo.cup.size }}</td>
                 </tr>
             {% endfor %}
         </table>
