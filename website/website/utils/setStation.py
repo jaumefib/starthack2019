@@ -35,9 +35,13 @@ def abstract_traffic():
                     res[str(station)] = int(last_travelers*reduction)
             res['lat'] = lat
             res['lon'] = lon
+            #print(lat, lon)
             total_stations.append(res)
 
-        print(total_stations)
+        print(len(total_stations))
+
+
+
 def make_data_stations():
 
      with open('../../../dataset/haltestelle-dataset-with-services.json') as f:
@@ -77,6 +81,8 @@ def make_data_stations():
 def Main():
 
     abstract_traffic()
+
+    #make_data_results()
 
 if __name__ == '__main__':
     Main()
