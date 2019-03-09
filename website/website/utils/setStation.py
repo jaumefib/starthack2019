@@ -123,7 +123,7 @@ def make_data_results():
 def Main():
     abstract_traffic()
     make_data_results()
-    # make_cups()
+    make_cups()
 
 
 if __name__ == '__main__':
