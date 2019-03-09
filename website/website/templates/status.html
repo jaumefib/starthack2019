@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block head_title %}Status{% endblock %}
+{% block share_title_1 %}Status{% endblock %}
+{% block share_title_2 %}Status{% endblock %}
+
+{% block content %}
+    <div class="col-sm-12 padding-0">
+        <h1>Current status of the system</h1>
+    </div>
+    <div class="col-sm-8 padding-0 no-style-link">
+        <h3>Available stock</h3>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="http://d3js.org/topojson.v1.min.js"></script>
+        <script src="{% static 'js/datamaps.all.min.js' %}"></script>
+        <div id="switzerland" style="width: 100%; height: 500px;"></div>
+        <script>
+            var bubble_map = new Datamap({
+                element: document.getElementById('switzerland'),
+                scope: 'cantons',
+                geographyConfig: {
+                    popupOnHover: false,
+                    highlightOnHover: false,
+                    borderColor: '#444',
+                    borderWidth: 0.5,
+                    dataUrl: '{% static 'json/readme-swiss.json' %}'
+                    //dataJson: topoJsonData
+                },
+                bubblesConfig: {
+                    highlightFillColor: "#ec0000",
+                    borderWidth: 0
+                },
+                fills: {
+                    'BUBBLE': '#444444',
+                    defaultFill: '#dddddd'
+                },
+                setProjection: function (element, options) {
+                    var projection, path;
+                    var width = document.getElementById("switzerland").offsetWidth, height = 500;
+                    projection = d3.geo.albers()
+                        .rotate([0, 0])
+                        .center([8.3, 46.8])
+                        .scale(12000)
+                        .translate([width / 2, height / 2])
+                        .precision(.1);
+                    path = d3.geo.path()
+                        .projection(projection);
+
+                    return {path: path, projection: projection};
+                }
+            });
+            var stations = [
+                {name: 'Bettwiesen', latitude: 47.498616599, longitude: 9.0207695963, radius: 10, fillKey: 'BUBBLE'}
+
+            ];
+            bubble_map.bubbles(stations, {
+                popupTemplate: function (geo, data) {
+                    return "<div class='hoverinfo'>" + data.name + "</div>";
+                }
+            });
+        </script>
+    </div>
+    <div class="col-sm-4 padding-0 no-style-link">
+        <h3 style="margin-bottom: 25px;">Suggested logistics</h3>
+        <table style="width:100%">
+            <tr>
+                <th>Origin</th>
+                <th>Destination</th>
+                <th>Quantity</th>
+            </tr>
+            <tr>
+                <td>Bern</td>
+                <td>Zürich</td>
+                <td>45</td>
+            </tr>
+            <tr>
+                <td>Lausanne</td>
+                <td>Geneve</td>
+                <td>23</td>
+            </tr>
+        </table>
+    </div>
+{% endblock %}

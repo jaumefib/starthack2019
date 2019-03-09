@@ -1,12 +1,15 @@
 {% extends "base.html" %}
 {% load staticfiles%}
 
-{% block head_title %}Home{% endblock %}
-{% block share_title_1 %}Home{% endblock %}
-{% block share_title_2 %}Home{% endblock %}
+{% block head_title %}Dashboard{% endblock %}
+{% block share_title_1 %}Dashboard{% endblock %}
+{% block share_title_2 %}Dashboard{% endblock %}
 
 {% block content %}
-    <div class="col-sm-8 padding-0 no-style-link">
-        HELLO
+    <div class="col-sm-2 padding-0 no-style-link">
+        <h3 style="margin-bottom: 0;">Current balance</h3>
+        <h1 style="margin-top: 10px;">{{ balance }}</h1>
+    </div>
+    <div class="col-sm-10 padding-0 no-style-link">
     </div>
 {% endblock %}
