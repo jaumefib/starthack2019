@@ -22,30 +22,47 @@ def abstract_traffic():
             except KeyError:  # includes simplejson.decoder.JSONDecodeError
                 travelers = -1
             if travelers != -1:
-                if travelers*reduction < 10:
+                if travelers * reduction < 10:
                     res['name'] = str(station)
                     res['cups'] = min_cups
                 else:
                     res['name'] = str(station)
-                    res['cups'] = int(travelers*reduction)
+                    res['cups'] = int(travelers * reduction)
 
                 last_travelers = travelers
             else:
-                if last_travelers*reduction < 10:
+                if last_travelers * reduction < 10:
                     res['name'] = str(station)
                     res['cups'] = min_cups
                 else:
                     res['name'] = str(station)
-                    res['cups'] = int(travelers*reduction)
+                    res['cups'] = int(travelers * reduction)
             res['lat'] = lat
             res['lon'] = lon
-            #print(lat, lon)
+            # print(lat, lon)
             total_stations.append(res)
 
-        #print(total_stations)
+        # print(total_stations)
+
+
+def make_cups():
+    data_out = []
+    k = 0
+    for i, station in enumerate(total_stations):
+        total_cups = total_stations[i]['cups']
+        for j in range(total_cups):
+            cup = {'pk': k,
+                   'model': 'website.Cup',
+                   'fields': {'sellPoint': i}
+                   }
+            data_out.append(cup)
+            k += 1
+
+    with open('../../../dataset/data_cups.json', 'w') as outfile:
+        json.dump(data_out, outfile, sort_keys=False, ensure_ascii=False)
+
 
 def make_data_results():
-
     data_out = []
 
     company = {'fields': {}}
@@ -67,7 +84,6 @@ def make_data_results():
         station['fields']['importance'] = 0
         data_out.append(station)
 
-
         sellPoint = {'fields': {}}
         sellPoint['pk'] = i
         sellPoint['model'] = 'website.SellPoint'
@@ -85,15 +101,17 @@ def make_data_results():
         dropOff['fields']['station'] = i
         data_out.append(dropOff)
 
-
     with open('../../../dataset/data_results.json', 'w') as outfile:
         json.dump(data_out, outfile, sort_keys=False, ensure_ascii=False)
 
-def Main():
 
+def Main():
     abstract_traffic()
 
-    make_data_results()
+    # make_data_results()
+
+    make_cups()
+
 
 if __name__ == '__main__':
     Main()
