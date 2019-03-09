@@ -70,21 +70,21 @@ def searchofcups():
 					lat = estate[station][4]
 					lon = estate[station][5]
 
+					# We have to delete it because we can't modify tuples
 					del estate[station]
+
 					# cups that can be used to distribute to other stations
 					estate[station] = (sellPoint, dropOff, current + qtty - desired, lat, lon)
 
 				else:  # If we have the exact amount or less
 
-					models.Moviment.create(origin=dropOff, destination=sellPoint, quantity=current + qtty)
+					models.Moviment.create(origin=dropOff, destination=sellPoint, quantity=qtty)
+					del estate[station]
 
 					if current + qtty - desired == 0:
 						del estate[key]
 					else:
-						models.Moviment.create(origin=dropOff, destination=sellPoint, quantity=current + qtty)
-						estate[station] = (sellPoint, dropOff, current + qtty - desired, lat, lon)
-
-
+						estate[key] = (sellPoint, dropOff, current + qtty - desired, lat, lon)
 
 
 def distribute():
