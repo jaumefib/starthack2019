@@ -87,7 +87,7 @@ class Scan(TabsView):
 
         except:
             print("Ha petat amb " + qrcode)
-            return "Ha patat"
+            return redirect("scan")
 
         return redirect("dashboard")
 
