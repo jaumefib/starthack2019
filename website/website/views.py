@@ -44,18 +44,24 @@ class Status(TabsView):
     def get_context_data(self, **kwargs):
         context = super(Status, self).get_context_data(**kwargs)
         movements = models.Movement.objects.all()
-        stations = models.Station.objects.filter(importance__gte=4)
-        stations_values = []
+        stations = models.Station.objects.all()
+        stations_values_current = []
+        stations_values_desired = []
         for station in stations:
             cups_current = 0
             cups_desired = 0
             for sellpoint in models.SellPoint.objects.filter(station=station).all():
                 cups_current += sellpoint.cups_current
                 cups_desired += sellpoint.cups_desired
-            list.append(stations_values, {"name": station.name, "importance": station.importance, "radius": 0.01*pow((6-station.importance), 2.25)*cups_current, "longitude": station.lon, "latitude": station.lat, "cups_current": cups_current, "cups_desired": cups_desired})
+            list.append(stations_values_current, {"name": station.name, "importance": station.importance, "radius": 0.01*pow((6-station.importance), 2.25)*cups_current, "longitude": station.lon, "latitude": station.lat, "cups_current": cups_current, "cups_desired": cups_desired})
+            list.append(stations_values_desired, {"name": station.name, "importance": station.importance,
+                                              "radius": 0.01 * pow((6 - station.importance), 2.25) * cups_desired,
+                                              "longitude": station.lon, "latitude": station.lat,
+                                              "cups_current": cups_current, "cups_desired": cups_desired})
         context.update({
             "movements": movements,
-            "stations": stations_values
+            "stations_current": stations_values_current,
+            "stations_desired": stations_values_desired
         })
         return context
 

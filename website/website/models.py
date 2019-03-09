@@ -52,9 +52,7 @@ class CustomUser(AbstractUser):
         return self.role == 999
 
     def increment_balance(self):
-        print(self.balance)
         self.balance = self.balance + 0.5
-        print(self.balance)
         self.save()
 
 

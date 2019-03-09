@@ -10,7 +10,15 @@
         <h1>Current status of the system</h1>
     </div>
     <div class="col-sm-8 padding-0 no-style-link">
-        <h3>Available stock</h3>
+        <div class="col-sm-8 padding-0">
+            <h3 style="margin-top: 10px;">Available stock</h3>
+        </div>
+        <div class="col-sm-4 padding-0">
+            <label class="switch">
+                <input type="checkbox">
+                <span class="slider"></span>
+            </label>
+        </div>
         <script src="http://d3js.org/d3.v3.min.js"></script>
         <script src="http://d3js.org/topojson.v1.min.js"></script>
         <script src="{% static 'js/datamaps.all.min.js' %}"></script>
@@ -51,11 +59,15 @@
                     return {path: path, projection: projection};
                 }
             });
-            var stations_values = [];
-            {% for station in stations %}
-                stations_values.push({"name": "{{ station.name }}", "importance": {{ station.importance }}, "radius": {{ station.radius }}, "latitude": {{ station.latitude }}, "longitude": {{ station.longitude }}, "cups_current": {{ station.cups_current }}, "cups_desired": {{ station.cups_desired }}, "fillKey": "BUBBLE"});
+            var stations_values_current = [];
+            {% for station in stations_current %}
+                stations_values_current.push({"name": "{{ station.name }}", "importance": {{ station.importance }}, "radius": {{ station.radius }}, "latitude": {{ station.latitude }}, "longitude": {{ station.longitude }}, "cups_current": {{ station.cups_current }}, "cups_desired": {{ station.cups_desired }}, "fillKey": "BUBBLE"});
             {% endfor %}
-            bubble_map.bubbles(stations_values, {
+            var stations_values_desired = [];
+            {% for station in stations_current %}
+                stations_values_desired.push({"name": "{{ station.name }}", "importance": {{ station.importance }}, "radius": {{ station.radius }}, "latitude": {{ station.latitude }}, "longitude": {{ station.longitude }}, "cups_current": {{ station.cups_current }}, "cups_desired": {{ station.cups_desired }}, "fillKey": "BUBBLE"});
+            {% endfor %}
+            bubble_map.bubbles(stations_values_current, {
                 popupTemplate: function (geo, data) {
                     return "<div class='hoverinfo'>" + data.name + "</br>Current: " + data.cups_current + "</br>Desired: " + data.cups_desired + "</div>";
                 }
@@ -63,7 +75,7 @@
         </script>
     </div>
     <div class="col-sm-4 padding-0 no-style-link">
-        <h3 style="margin-bottom: 25px;">Suggested logistics</h3>
+        <h3 style="margin-bottom: 25px; margin-top: 10px;">Suggested logistics</h3>
         <table style="width:100%">
             <tr>
                 <th>Origin</th>
