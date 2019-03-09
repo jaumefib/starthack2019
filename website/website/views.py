@@ -169,15 +169,19 @@ class HistoryId(TabsView):
     def get_back_url(self):
         return 'javascript:history.back()'
 
-    def get_queryset(self):
+    def get_context_data(self, **kwargs):
         id_ = self.kwargs['user_id']
         history = models.History.objects.filter(id=id_)
 
         if len(history) != 0:
-            one_history = history.first()
-
+            history_single = history.first()
+            context = super(HistoryId, self).get_context_data(**kwargs)
+            context.update({
+                'historyid': history_single,
+            })
+            return context
         else:
-            return None
+            return 'javascript:history.back()'
 
 
 class SignUp(TabsView):
