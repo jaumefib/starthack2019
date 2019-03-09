@@ -22,17 +22,45 @@ class TabsView(TemplateView):
 class Dashboard(TabsView):
     template_name = 'dashboard.html'
 
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect("login")
+        if request.user.role == 3:
+            return redirect("status")
+        elif request.user.role == 4:
+            return redirect("scan")
+        return render(request, "dashboard.html", self.get_context_data())
+
     def get_current_tabs(self):
         return menu_tabs()
 
     def get_context_data(self, **kwargs):
         context = super(Dashboard, self).get_context_data(**kwargs)
-        balance = self.request.user.balance
-        balance = '{0:,.2f}'.format(balance) + "CHF"
-        cups = models.Cup.objects.filter(user=self.request.user, dropOff=None)
+
+        balance = 0.0
+        total_cups = 0
+        desired_cups = 0
+        identified = self.request.user.is_authenticated
+        cups = models.Cup.objects.none()
+
+        if identified:
+            username = self.request.user
+            usuari = models.CustomUser.objects.filter(username=username).first()
+            balance = usuari.balance
+            balance = '{0:,.2f}'.format(balance) + "CHF"
+            cups = models.Cup.objects.filter(user=self.request.user, dropOff=None).order_by('-time2', '-time3')
+
+            if self.request.user.role == 2:
+                total_cups = usuari.sellPoint.cups_current
+                desired_cups = usuari.sellPoint.cups_desired
+
         context.update({
             "balance": balance,
-            "cups": cups
+            "cups": cups,
+            "identified": identified,
+            "total_cups": total_cups,
+            "desired_cups": desired_cups,
+            "message": ""
         })
         return context
 
@@ -109,14 +137,22 @@ class Scan(TabsView):
         try:
             cup = models.Cup.objects.filter(id=qrcode, user=None)
             if cup:
-                cup.first().assign_to_user(user)
-                user.increment_balance()
+                if user.role == 2:
+                    cup.first().sell_cup()
+                    cup.sellPoint.decrement_current()
+                elif user.role == 4:
+                    cup.first().return_to_dropoff(user.dropOff)
+                    cup.dropOff.increment_current()
+                else:
+                    cup.first().assign_to_user(user)
+                    user.increment_balance()
         except:
             pass
 
-        balance = user.balance
-        balance = '{0:,.2f}'.format(balance) + "CHF"
-        return redirect("dashboard")
+        if user.role == 1:
+            return redirect("dashboard")
+        else:
+            return redirect("scan")
 
     def get_current_tabs(self):
         return menu_tabs()

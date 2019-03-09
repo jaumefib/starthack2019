@@ -33,15 +33,42 @@ class SellPoint(models.Model):
     def __str__(self):
         return "SellPoint '" + self.name + "'"
 
+    def decrement_current(self):
+        self.cups_current = self.cups_current - 1
+        self.save()
+
+    def increment_current(self):
+        self.cups_current = self.cups_current + 1
+        self.save()
+
 
 class DropOff(models.Model):
     station = models.ForeignKey(Station, on_delete=models.CASCADE)
+    cups_current = models.IntegerField(default=50)
+
+    def decrement_current(self):
+        self.cups_current = self.cups_current - 1
+        self.save()
+
+    def increment_current(self):
+        self.cups_current = self.cups_current + 1
+        self.save()
 
 
 class CustomUser(AbstractUser):
     role = models.IntegerField(default=1)
-    sellPoint = models.ForeignKey(SellPoint, null=True, default=None,
-                                  on_delete=models.CASCADE, verbose_name="selling point (shop assistant)")
+    sellPoint = models.ForeignKey(SellPoint,
+                                  null=True,
+                                  blank=True,
+                                  default=None,
+                                  on_delete=models.CASCADE,
+                                  verbose_name="selling point (shop assistant)")
+    dropOff = models.ForeignKey(DropOff,
+                                  null=True,
+                                  blank=True,
+                                  default=None,
+                                  on_delete=models.CASCADE,
+                                  verbose_name="dropoff point (return machine)")
     balance = models.FloatField(default=0.0)
 
     def is_user(self):
@@ -107,8 +134,7 @@ class Cup(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
 
     def sell_cup(self):
-        self.time1 = datetime.now()
-
+        self.time2 = datetime.now()a
         self.save()
 
     def assign_to_user(self, user: CustomUser):
@@ -126,12 +152,12 @@ class Cup(models.Model):
         self.time4 = datetime.now()
         self.save()
 
-        assert (self.sellPoint is None)
         assert (self.user is not None)
         assert (self.dropOff is not None)
 
     def clean_at_dropoff(self):
         self.user = None
+        self.time1 = datetime.now()
         self.save()
 
         assert (self.sellPoint is None)
