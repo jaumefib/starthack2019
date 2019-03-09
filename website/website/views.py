@@ -140,7 +140,7 @@ class History(TabsView):
 
 
 class HistoryId(TabsView):
-    template_name = 'history_id.html'
+    template_name = 'history_detail.html'
 
     def get_back_url(self):
         return 'javascript:history.back()'
