@@ -12,5 +12,6 @@ urlpatterns = [
     url(r'^logout/$', auth_views.LogoutView.as_view(next_page="login"), name='logout'),
     url(r'^signup/$', views.SignUp.as_view(), name='signup'),
     url(r'^scan/$', views.Scan.as_view(), name='scan'),
+    url(r'^status/$', views.Status.as_view(), name="status"),
     url(r'^admin/', admin.site.urls)
 ]

@@ -61,6 +61,7 @@
                             {% if request.user.is_authenticated %}
                                 <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
                                 <li><a href="{% url 'scan' %}">Scan cup</a></li>
+                                <li><a href="{% url 'status' %}">Status</a></li>
                                 <li><a href="{% url 'logout' %}">Logout</a></li>
                             {% else %}
                                 <li><a href="{% url 'login' %}">Log In</a></li>

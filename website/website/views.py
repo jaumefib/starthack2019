@@ -25,6 +25,22 @@ class Dashboard(TabsView):
 
     def get_context_data(self, **kwargs):
         context = super(Dashboard, self).get_context_data(**kwargs)
+        balance = self.request.user.balance
+        balance = str(balance) + "CHF"
+        context.update({
+            "balance": balance
+        })
+        return context
+
+
+class Status(TabsView):
+    template_name = 'status.html'
+
+    def get_current_tabs(self):
+        return menu_tabs()
+
+    def get_context_data(self, **kwargs):
+        context = super(Status, self).get_context_data(**kwargs)
         return context
 
 
