@@ -168,22 +168,29 @@ class History(TabsView):
 class HistoryId(TabsView):
     template_name = 'history_detail.html'
 
+    def get(self, request, *args, **kwargs):
+        id_ = self.kwargs['item_id']
+        print(id_)
+        history = models.History.objects.filter(id=id_)
+
+        if history.count() <= 0:
+            return redirect("history")
+        return render(request, "history_detail.html", self.get_context_data())
+
     def get_back_url(self):
         return 'javascript:history.back()'
 
     def get_context_data(self, **kwargs):
-        id_ = self.kwargs['user_id']
+        context = super(HistoryId, self).get_context_data(**kwargs)
+
+        id_ = self.kwargs['item_id']
         history = models.History.objects.filter(id=id_)
 
-        if len(history) != 0:
-            history_single = history.first()
-            context = super(HistoryId, self).get_context_data(**kwargs)
-            context.update({
-                'historyid': history_single,
-            })
-            return context
-        else:
-            return 'javascript:history.back()'
+        history_single = history.first()
+        context.update({
+            'historyid': history_single,
+        })
+        return context
 
 
 class SignUp(TabsView):

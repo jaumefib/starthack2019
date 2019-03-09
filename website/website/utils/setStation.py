@@ -132,7 +132,7 @@ def make_users():
             username = name.lower() + "." + surname.lower() + "." + str(randint(1, 2019))
             email = username + "@sbb.ch"
             user = {'model': 'website.CustomUser',
-                   'fields': {"username": username, 'role': 1, "name": name, "surname": surname, "email": email}
+                   'fields': {"username": username, 'role': 1, "first_name": name, "last_name": surname, "email": email}
                    }
             data_out.append(user)
             k += 1
