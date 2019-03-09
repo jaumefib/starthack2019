@@ -26,6 +26,8 @@ class SellPoint(models.Model):
     name = models.CharField(max_length=100)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     station = models.ForeignKey(Station, on_delete=models.CASCADE)
+    cups_desired = models.IntegerField(default=50)
+    cups_current = models.IntegerField(default=50)
     def __str__(self):
         return "SellPoint '" + self.name + "'"
 
@@ -85,3 +87,9 @@ class Cup(models.Model):
         assert (self.sellPoint is None)
         assert (self.user is None)
         assert (self.dropOff is not None)
+
+
+class Movement(models.Model):
+    origin = models.ForeignKey(Station, on_delete=models.CASCADE, related_name="origin")
+    destination = models.ForeignKey(Station, on_delete=models.CASCADE, related_name="destination")
+    quantity = models.IntegerField(default=0)
