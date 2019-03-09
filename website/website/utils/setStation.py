@@ -81,7 +81,22 @@ def make_data_results():
         station['fields']['name'] = total_stations[i]['name']
         station['fields']['lat'] = total_stations[i]['lat']
         station['fields']['lon'] = total_stations[i]['lon']
-        station['fields']['importance'] = 0
+
+        cups = total_stations[i]['cups']
+        if cups >= 693:
+            imp = 5
+        elif cups >= 40:
+            imp = 4
+        elif cups >= 20:
+            imp = 3
+        elif cups >= 10:
+            imp = 2
+        else:
+            imp = 1
+        station['fields']['importance'] = imp
+        station['fields']['cups_desired'] = cups
+        station['fields']['cups_current'] = cups
+
         data_out.append(station)
 
         sellPoint = {'fields': {}}
@@ -107,9 +122,7 @@ def make_data_results():
 
 def Main():
     abstract_traffic()
-
-    # make_data_results()
-
+    make_data_results()
     make_cups()
 
 
