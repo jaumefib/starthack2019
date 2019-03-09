@@ -25,7 +25,7 @@ SECRET_KEY = 'dvz(jlawiku8#ikx8ke@(jxv4*i=e$$o8wzw5e-^!(i4!g(dch'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', 'cupflow.oriolclosa.cat']
 
 
 # Application definition
