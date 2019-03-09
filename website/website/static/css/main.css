@@ -793,3 +793,9 @@ body {
     border: none;
     box-shadow: 0 1px 2px 0 #c1c1c1;
 }
+
+#qrcode {
+  width:160px;
+  height:160px;
+  margin-top:15px;
+}

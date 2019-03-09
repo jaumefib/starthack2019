@@ -115,5 +115,17 @@
                 <td>{{ historyid.cup.size }}</td>
             </tr>
         </table>
+        <div id="qrcode" class="col-sm-8 padding-0" ></div>
+        <script type="text/javascript" src="../static/js/qrcode.min.js">
+            var qrcode = new QRCode(document.getElementById("qrcode"), {
+	            text: "http://jindo.dev.naver.com/collie",
+	            width: 128,
+	            height: 128,
+	            colorDark : "#000000",
+	            colorLight : "#ffffff",
+	            correctLevel : QRCode.CorrectLevel.H
+            });
+            qrcode.makeCode("http://jindo.dev.naver.com/collie");
+        </script>
     </div>
 {% endblock %}
