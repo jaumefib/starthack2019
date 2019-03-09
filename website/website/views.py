@@ -111,7 +111,7 @@ class History(TabsView):
             if user.role == 1:
                 history = models.History.objects.filter(user=user).all()
             elif user.role == 2:
-                history = models.History.objects.filter(user=user).all()
+                history = models.History.objects.filter(sellPoint=user.sellPoint).all()
             elif user.role == 3:
                 history = models.History.objects.all()
             elif user.role == 4:

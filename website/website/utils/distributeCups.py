@@ -7,33 +7,34 @@ def filltocapacity():
 	stations = models.Station.objects.all()
 
 	for station in stations:
-		sellPoint = models.SellPoint.get(station=station.name)
-		dropOff = models.DropOff.get(station=station.name)
+		sellPoint = models.SellPoint.objects.filter(station=station.name)
+		dropOff = models.DropOff.objects.filter(station=station.name)
 
 		current = sellPoint.cups_current
 		desired = sellPoint.cups_desired
 
-		cups = models.Cup.get(dropOff=dropOff)
-		qtty = len(cups)
+		for dropOff_ind in dropOff:
+			cups = models.Cup.objects.filter(dropOff=dropOff_ind)
+			qtty = cups.count()
 
-		lat = station.lat
-		lon = station.lon
+			lat = station.lat
+			lon = station.lon
 
-		if current < desired:
+			if current < desired:
 
-			if current+qtty > desired:  # If we only use the exact number of cups to have the desired number of cups
-				models.Moviment.create(origin=dropOff, destination=sellPoint, quantity=desired-current)
-				# cups that can be used to distribute to other stations
-				estate[station.name] = (sellPoint, dropOff, current+qtty-desired, lat, lon)
-			else:  # If we have the exact amount or less
-				models.Moviment.create(origin=dropOff, destination=sellPoint, quantity=current+qtty)
-				estate[station.name] = (sellPoint, dropOff, current+qtty-desired, lat, lon)
+				if current+qtty > desired:  # If we only use the exact number of cups to have the desired number of cups
+					models.Moviment.create(origin=dropOff, destination=sellPoint, quantity=desired-current)
+					# cups that can be used to distribute to other stations
+					estate[station.name] = (sellPoint, dropOff, current+qtty-desired, lat, lon)
+				else:  # If we have the exact amount or less
+					models.Moviment.create(origin=dropOff, destination=sellPoint, quantity=current+qtty)
+					estate[station.name] = (sellPoint, dropOff, current+qtty-desired, lat, lon)
 
-		else:  # If we have excess of cups in the dropOff, we could use it to distribute to other stations
-			estate[station.name] = (sellPoint, dropOff, cups, lat, lon)
+			else:  # If we have excess of cups in the dropOff, we could use it to distribute to other stations
+				estate[station.name] = (sellPoint, dropOff, cups, lat, lon)
 
-		if current+qtty-desired == 0:
-			del estate[station.name]
+			if current+qtty-desired == 0:
+				del estate[station.name]
 
 
 def searchofcups():
