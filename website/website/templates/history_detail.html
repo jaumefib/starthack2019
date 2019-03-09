@@ -83,49 +83,53 @@
         <h3 style="margin-bottom: 25px; margin-top: 10px;">Cup information</h3>
         <table style="width:100%">
             <tr>
-                <td>Origin</td>
+                <th>Origin</th>
                 <td>{{ historyid.sellPoint.station.name }}</td>
             </tr>
             <tr>
-                <td>Destination</td>
+                <th>Destination</th>
                 <td>{{ historyid.dropOff.station.name  }}</td>
             </tr>
             <tr>
                 <th>Collected time</th>
-                <th>{{ historyid.time2 }}</th>
+                <td>{{ historyid.time2 }}</td>
             </tr>
             <tr>
-                <td>Checked-in time</td>
+                <th>Checked-in time</th>
                 <td>{{ historyid.time3 }}</td>
             </tr>
             <tr>
-                <td>Returned time</td>
+                <th>Returned time</th>
                 <td>{{ historyid.time4 }}</td>
             </tr>
             <tr>
-                <td>Company</td>
+                <th>Company</th>
                 <td>{{ historyid.sellPoint.company.name }}</td>
             </tr>
              <tr>
-                <td>Store</td>
+                <th>Store</th>
                 <td>{{ historyid.sellPoint.name }}</td>
             </tr>
             <tr>
-                <td>Cup size</td>
+                <th>Cup size</th>
                 <td>{{ historyid.cup.size }}</td>
             </tr>
         </table>
-        <div id="qrcode" class="col-sm-8 padding-0" ></div>
-        <script type="text/javascript" src="../static/js/qrcode.min.js">
-            var qrcode = new QRCode(document.getElementById("qrcode"), {
-	            text: "http://jindo.dev.naver.com/collie",
-	            width: 128,
-	            height: 128,
-	            colorDark : "#000000",
-	            colorLight : "#ffffff",
-	            correctLevel : QRCode.CorrectLevel.H
-            });
-            qrcode.makeCode("http://jindo.dev.naver.com/collie");
+        <script type="text/javascript" src="{% static "js/qrcode.js" %}"></script>
+
+        <div id="qrcode" style="width:100px; height:100px; margin-top:15px;"></div>
+{#        <img src="qrcode-encoding.png" />#}
+        <script>
+            function generateQrCode() {
+                var qrcode = new QRCode(document.getElementById("qrcode"), {
+                    width : 100,
+	                height : 100
+                });
+
+                qrcode.makeCode("{{ historyid.cup.id }}")
+            }
+            $(window).onload = generateQrCode();
         </script>
     </div>
+
 {% endblock %}
