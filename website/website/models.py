@@ -10,6 +10,7 @@ class Station(models.Model):
     name = models.CharField(max_length=100)
     lat = models.FloatField()
     lon = models.FloatField()
+    importance = models.IntegerField(default=0)
 
 
 class Company(models.Model):
