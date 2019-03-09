@@ -6,7 +6,6 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.utils.datetime_safe import datetime
 
-
 class Station(models.Model):
     name = models.CharField(max_length=100)
     lat = models.FloatField()
@@ -19,6 +18,7 @@ class Station(models.Model):
 
 class Company(models.Model):
     name = models.CharField(max_length=100)
+
     def __str__(self):
         return "Company '" + self.name + "'"
 
@@ -29,12 +29,14 @@ class SellPoint(models.Model):
     station = models.ForeignKey(Station, on_delete=models.CASCADE)
     cups_desired = models.IntegerField(default=50)
     cups_current = models.IntegerField(default=50)
+
     def __str__(self):
         return "SellPoint '" + self.name + "'"
 
 
 class DropOff(models.Model):
     station = models.ForeignKey(Station, on_delete=models.CASCADE)
+
 
 class CustomUser(AbstractUser):
     role = models.IntegerField(default=1)
@@ -57,6 +59,37 @@ class CustomUser(AbstractUser):
         self.save()
 
 
+class History(models.Model):
+    time1 = models.DateTimeField(null=True, default=datetime.now())
+    time2 = models.DateTimeField(null=True, default=None)
+    time3 = models.DateTimeField(null=True, default=None)
+    time4 = models.DateTimeField(null=True, default=None)
+
+    sellPoint = models.ForeignKey(SellPoint, null=True, default=None,
+                                  on_delete=models.CASCADE, verbose_name="selling point (shop assistant)")
+    dropOff = models.ForeignKey(DropOff, null=True, default=None,
+                                on_delete=models.CASCADE, verbose_name="cup dropped off")
+    user = models.ForeignKey(CustomUser, null=True, default=None,
+                             on_delete=models.CASCADE, verbose_name="user")
+
+    def set_state_one(self, sellPoint: SellPoint):
+        self.time1 = datetime.now()
+        self.sellPoint = sellPoint
+
+        self.save()
+
+    def set_state_three(self, user: CustomUser):
+        self.time3 = datetime.now()
+        self.user = user
+
+        self.save()
+
+    def set_state_four(self, dropOff: DropOff):
+        self.time4 = datetime.now()
+        self.dropOff = dropOff
+
+        self.save()
+
 
 class Cup(models.Model):
     # Unique id
@@ -75,6 +108,7 @@ class Cup(models.Model):
 
     def sell_cup(self):
         self.time1 = datetime.now()
+
         self.save()
 
     def assign_to_user(self, user: CustomUser):
