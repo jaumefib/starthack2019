@@ -7,11 +7,11 @@
 
 {% block content %}
     <div class="col-sm-12 padding-0">
-        <h1>Current status of the system</h1>
+        <h1>Coffee cup {{ historyid.pk }} history</h1>
     </div>
     <div class="col-sm-8 padding-0 no-style-link">
         <div class="col-sm-8 padding-0">
-            <h3 id="map-title" style="margin-top: 10px;">Cup trip</h3>
+            <h3 id="map-title" style="margin-top: 10px;">Cup travel</h3>
         </div>
         <script src="http://d3js.org/d3.v3.min.js"></script>
         <script src="http://d3js.org/topojson.v1.min.js"></script>
@@ -80,42 +80,40 @@
         </script>
     </div>
     <div class="col-sm-4 padding-0 no-style-link">
-        <h3 style="margin-bottom: 25px; margin-top: 10px;">Suggested logistics</h3>
+        <h3 style="margin-bottom: 25px; margin-top: 10px;">Cup information</h3>
         <table style="width:100%">
-            {% for histo in historyid %}
-                <tr>
-                    <td>Origin</td>
-                    <td>{{ histo.sellPoint.station.name }}</td>
-                </tr>
-                <tr>
-                    <td>Destination</td>
-                    <td>{{ histo.dropOff.station.name  }}</td>
-                </tr>
-                <tr>
-                    <th>Collected time</th>
-                    <th>{{ histo.time2 }}</th>
-                </tr>
-                <tr>
-                    <td>Checked-in time</td>
-                    <td>{{ histo.time3 }}</td>
-                </tr>
-                <tr>
-                    <td>Returned time</td>
-                    <td>{{ histo.time4 }}</td>
-                </tr>
-                <tr>
-                    <td>Company</td>
-                    <td>{{ histo.sellPoint.company }}</td>
-                </tr>
-                 <tr>
-                    <td>Store</td>
-                    <td>{{ histo.sellPoint.name }}</td>
-                </tr>
-                <tr>
-                    <td>Cup size</td>
-                    <td>{{ histo.cup.size }}</td>
-                </tr>
-            {% endfor %}
+            <tr>
+                <td>Origin</td>
+                <td>{{ historyid.sellPoint.station.name }}</td>
+            </tr>
+            <tr>
+                <td>Destination</td>
+                <td>{{ historyid.dropOff.station.name  }}</td>
+            </tr>
+            <tr>
+                <th>Collected time</th>
+                <th>{{ historyid.time2 }}</th>
+            </tr>
+            <tr>
+                <td>Checked-in time</td>
+                <td>{{ historyid.time3 }}</td>
+            </tr>
+            <tr>
+                <td>Returned time</td>
+                <td>{{ historyid.time4 }}</td>
+            </tr>
+            <tr>
+                <td>Company</td>
+                <td>{{ historyid.sellPoint.company.name }}</td>
+            </tr>
+             <tr>
+                <td>Store</td>
+                <td>{{ historyid.sellPoint.name }}</td>
+            </tr>
+            <tr>
+                <td>Cup size</td>
+                <td>{{ historyid.cup.size }}</td>
+            </tr>
         </table>
     </div>
 {% endblock %}
