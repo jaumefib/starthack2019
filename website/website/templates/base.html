@@ -66,6 +66,7 @@
                                     <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
                                 {% endif %}
                                 <li><a href="{% url 'scan' %}">Scan cup</a></li>
+                                <li><a href="{% url 'history' %}">History</a></li>
                                 {% if request.user.role == 3 %}
                                     <li><a href="{% url 'status' %}">Status</a></li>
                                 {% endif %}

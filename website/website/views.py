@@ -103,8 +103,23 @@ class History(TabsView):
         return menu_tabs()
 
     def get_context_data(self, **kwargs):
+        username = self.request.user
+        user = models.CustomUser.objects.filter(username=username).first()
         context = super(History, self).get_context_data(**kwargs)
-        history = models.History.objects.all()
+
+        try:
+            if user.role == 1:
+                history = models.History.objects.filter(user=user).all()
+            elif user.role == 2:
+                history = models.History.objects.filter(user=user).all()
+            elif user.role == 3:
+                history = models.History.objects.all()
+            elif user.role == 4:
+                history = models.History.objects.none()
+
+        except:
+            pass
+
         context.update({
             'history': history,
         })
