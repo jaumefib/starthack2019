@@ -780,7 +780,7 @@ input:checked + .slider:before {
 }
 
 .footer {
-    position: absolute;
+    position: sticky;
     bottom: 0;
     width: 100%;
 }
@@ -792,4 +792,22 @@ body {
 .navbar {
     border: none;
     box-shadow: 0 1px 2px 0 #c1c1c1;
+}
+
+
+html, body {
+  height: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+}
+.navbar {
+  flex-shrink: 0;
+}
+.content.container {
+  flex: 1 0 auto;
+}
+.footer {
+  flex-shrink: 0;
 }
