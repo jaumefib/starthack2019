@@ -24,7 +24,7 @@ class Dashboard(TabsView):
 
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return redirect("login")
+            return render(request, "dashboard.html", self.get_context_data())
         if request.user.role == 3:
             return redirect("status")
         elif request.user.role == 4:
@@ -41,6 +41,8 @@ class Dashboard(TabsView):
         total_cups = 0
         desired_cups = 0
         identified = self.request.user.is_authenticated
+        graphics_values = []
+        labels = []
         cups = models.Cup.objects.none()
 
         if identified:
@@ -53,6 +55,11 @@ class Dashboard(TabsView):
             if self.request.user.role == 2:
                 total_cups = usuari.sellPoint.cups_current
                 desired_cups = usuari.sellPoint.cups_desired
+                graphics_values = [1,2,3]
+                labels = ["A", "B", "C"]
+
+                models.Cup.objects.filter()
+
 
         context.update({
             "balance": balance,
@@ -60,7 +67,9 @@ class Dashboard(TabsView):
             "identified": identified,
             "total_cups": total_cups,
             "desired_cups": desired_cups,
-            "message": ""
+            "message": "",
+            "graphics_values" : graphics_values,
+            "labels": labels
         })
         return context
 
