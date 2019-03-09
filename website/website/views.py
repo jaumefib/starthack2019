@@ -8,6 +8,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from website import models
 from website.forms import SignUpForm
 
+import re
+
 def menu_tabs():
     t = [('Scan', reverse('scan'), False)]
     return t
@@ -26,7 +28,7 @@ class Dashboard(TabsView):
     def get_context_data(self, **kwargs):
         context = super(Dashboard, self).get_context_data(**kwargs)
         balance = self.request.user.balance
-        balance = str(balance) + "CHF"
+        balance = '{0:,.2f}'.format(balance) + "CHF"
         context.update({
             "balance": balance
         })
@@ -93,18 +95,20 @@ class Scan(TabsView):
 
     def post(self, request, *args, **kwargs):
         qrcode = request.POST.get('qr_code')
-        user = request.user
+        username = request.user
+        user = models.CustomUser.objects.filter(username=username).first()
 
         try:
-         cup = models.Cup.objects.get(id = qrcode)
-         cup.assign_to_user(user)
-         cup.sellPoint.station
-
+            cup = models.Cup.objects.filter(id=qrcode, user=None)
+            if cup:
+                cup.first().assign_to_user(user)
+                user.increment_balance()
         except:
-            print("Ha petat amb " + qrcode)
-            return redirect("scan")
+            pass
 
-        return redirect("dashboard")
+        balance = user.balance
+        balance = '{0:,.2f}'.format(balance) + "CHF"
+        return render(request, 'dashboard.html', {"balance": balance})
 
     def get_current_tabs(self):
         return menu_tabs()

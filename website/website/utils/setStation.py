@@ -51,8 +51,7 @@ def make_cups():
     for i, station in enumerate(total_stations):
         total_cups = total_stations[i]['cups']
         for j in range(total_cups):
-            cup = {'pk': k,
-                   'model': 'website.Cup',
+            cup = {'model': 'website.Cup',
                    'fields': {'sellPoint': i}
                    }
             data_out.append(cup)

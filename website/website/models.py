@@ -39,7 +39,7 @@ class CustomUser(AbstractUser):
     role = models.IntegerField(default=1)
     sellPoint = models.ForeignKey(SellPoint, null=True, default=None,
                                   on_delete=models.CASCADE, verbose_name="selling point (shop assistant)")
-    balance = models.DecimalField(decimal_places=2, max_digits=30, default=Decimal(0))
+    balance = models.FloatField(default=0.0)
 
     def is_user(self):
         return self.role == 1
@@ -51,11 +51,17 @@ class CustomUser(AbstractUser):
     def is_admin(self):
         return self.role == 999
 
+    def increment_balance(self):
+        print(self.balance)
+        self.balance = self.balance + 0.5
+        print(self.balance)
+        self.save()
+
 
 
 class Cup(models.Model):
     # Unique id
-    id = models.IntegerField(primary_key=True, default=uuid.uuid4)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     size = models.IntegerField(default=0)
     timeIn = models.DateTimeField(null=True, default=None)
     timeEnd = models.DateTimeField(null=True, default=None)
@@ -68,6 +74,7 @@ class Cup(models.Model):
 
     def assign_to_user(self, user: CustomUser):
         self.user = user
+        self.save()
 
         assert (self.sellPoint is not None)
         assert (self.user is not None)
@@ -76,6 +83,7 @@ class Cup(models.Model):
     def return_to_dropoff(self, dropOff: DropOff):
         self.dropOff = dropOff
         self.sellPoint = None
+        self.save()
 
         assert (self.sellPoint is None)
         assert (self.user is not None)
@@ -83,6 +91,7 @@ class Cup(models.Model):
 
     def clean_at_dropoff(self):
         self.user = None
+        self.save()
 
         assert (self.sellPoint is None)
         assert (self.user is None)
