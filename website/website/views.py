@@ -96,6 +96,20 @@ class Status(TabsView):
         return context
 
 
+class History(TabsView):
+    template_name = 'history.html'
+
+    def get_current_tabs(self):
+        return menu_tabs()
+
+    def get_context_data(self, **kwargs):
+        context = super(History, self).get_context_data(**kwargs)
+        history = models.History.objects.all()
+        context.update({
+            'history': history,
+        })
+        return context
+
 class SignUp(TabsView):
     template_name = 'signup.html'
 

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block head_title %}History{% endblock %}
+{% block share_title_1 %}History{% endblock %}
+{% block share_title_2 %}History{% endblock %}
+
+{% block content %}
+    <div class="col-sm-12 padding-0 no-style-link">
+        <h3 style="margin-bottom: 25px; margin-top: 10px;">History</h3>
+        <table style="width:100%">
+            <tr>
+                <th>Origin</th>
+                <th>Destination</th>
+                <th>Collected time</th>
+                <th>Checked-in time</th>
+                <th>Returned time</th>
+            </tr>
+            {% for histo in history %}
+                <tr>
+                    <td>{{ histo.sellPoint.station.name }}</td>
+                    <td>{{ histo.dropOff.station.name }}</td>
+                    <td>{{ histo.time2 }}</td>
+                    <td>{{ histo.time3 }}</td>
+                    <td>{{ histo.time4 }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <script>
+        $('#change-map').click(function(){
+            let class1 = document.getElementById("switzerland1").getAttribute("class");
+            if(class1 === "map-hidden"){
+                document.getElementById("switzerland1").setAttribute("class", "");
+                document.getElementById("switzerland2").setAttribute("class", "map-hidden");
+                document.getElementById("map-title").innerHTML = "Available stock";
+            }
+            else{
+                document.getElementById("switzerland1").setAttribute("class", "map-hidden");
+                document.getElementById("switzerland2").setAttribute("class", "");
+                document.getElementById("map-title").innerHTML = "Stock demand";
+            }
+        });
+
+        function map_hidden(){
+            document.getElementById("switzerland2").setAttribute("class", "map-hidden");
+        }
+
+        $(window).onload = map_hidden();
+    </script>
+{% endblock %}
