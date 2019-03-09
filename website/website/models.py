@@ -1,5 +1,7 @@
 import uuid as uuid
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 
 
 class Station(models.Model):
@@ -22,10 +24,7 @@ class DropOff(models.Model):
     station = models.ForeignKey(Station, on_delete=models.CASCADE)
 
 
-class User(models.Model):
-    name = models.CharField(max_length=100, null=True)
-    surname = models.CharField(max_length=100, null=True)
-    email = models.CharField(max_length=100, editable=False, unique=True, default='')
+class CustomUser(AbstractUser):
     role = models.IntegerField(default=1)
     sellPoint = models.ForeignKey(SellPoint, null=True, default=None,
                                   on_delete=models.CASCADE, verbose_name="selling point (shop assistant)")
@@ -52,9 +51,9 @@ class Cup(models.Model):
     # SellPoint shouldn't be empty while initializing!!!!!
     sellPoint = models.ForeignKey(SellPoint, on_delete=models.CASCADE, null=True)
     dropOff = models.ForeignKey(DropOff, on_delete=models.CASCADE, null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
 
-    def assign_to_user(self, user: User):
+    def assign_to_user(self, user: CustomUser):
         self.user = user
 
         assert (self.sellPoint is not None)
