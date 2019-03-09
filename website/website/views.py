@@ -43,7 +43,7 @@ class Dashboard(TabsView):
             usuari = models.CustomUser.objects.filter(username=username).first()
             balance = usuari.balance
             balance = '{0:,.2f}'.format(balance) + "CHF"
-            cups = models.Cup.objects.filter(user=self.request.user, dropOff=None)
+            cups = models.Cup.objects.filter(user=self.request.user, dropOff=None).order_by('-time2', '-time3')
 
             if self.request.user.role == 2:
                 my_sell_point = usuari.sellPoint
@@ -53,7 +53,8 @@ class Dashboard(TabsView):
             "balance": balance,
             "cups": cups,
             "identified": identified,
-            "total_cups": total_cups
+            "total_cups": total_cups,
+            "message": ""
         })
         return context
 
@@ -130,8 +131,12 @@ class Scan(TabsView):
         try:
             cup = models.Cup.objects.filter(id=qrcode, user=None)
             if cup:
-                cup.first().assign_to_user(user)
-                user.increment_balance()
+                if user.role == 2:
+                    cup.first().sell_cup()
+                    cup.sellPoint.decrement_current()
+                else:
+                    cup.first().assign_to_user(user)
+                    user.increment_balance()
         except:
             pass
 

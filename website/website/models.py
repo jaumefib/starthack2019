@@ -32,6 +32,14 @@ class SellPoint(models.Model):
     def __str__(self):
         return "SellPoint '" + self.name + "'"
 
+    def decrement_current(self):
+        self.cups_current = self.cups_current - 1
+        self.save()
+
+    def increment_current(self):
+        self.cups_current = self.cups_current + 1
+        self.save()
+
 
 class DropOff(models.Model):
     station = models.ForeignKey(Station, on_delete=models.CASCADE)
@@ -78,7 +86,7 @@ class Cup(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
 
     def sell_cup(self):
-        self.time1 = datetime.now()
+        self.time2 = datetime.now()
         self.save()
 
     def assign_to_user(self, user: CustomUser):
@@ -102,6 +110,7 @@ class Cup(models.Model):
 
     def clean_at_dropoff(self):
         self.user = None
+        self.time1 = datetime.now()
         self.save()
 
         assert (self.sellPoint is None)
