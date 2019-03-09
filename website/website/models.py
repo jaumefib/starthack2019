@@ -6,6 +6,7 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.utils.datetime_safe import datetime
 
+
 class Station(models.Model):
     name = models.CharField(max_length=100)
     lat = models.FloatField()
@@ -64,11 +65,11 @@ class CustomUser(AbstractUser):
                                   on_delete=models.CASCADE,
                                   verbose_name="selling point (shop assistant)")
     dropOff = models.ForeignKey(DropOff,
-                                  null=True,
-                                  blank=True,
-                                  default=None,
-                                  on_delete=models.CASCADE,
-                                  verbose_name="dropoff point (return machine)")
+                                null=True,
+                                blank=True,
+                                default=None,
+                                on_delete=models.CASCADE,
+                                verbose_name="dropoff point (return machine)")
     balance = models.FloatField(default=0.0)
 
     def is_user(self):
@@ -83,38 +84,6 @@ class CustomUser(AbstractUser):
 
     def increment_balance(self):
         self.balance = self.balance + 0.5
-        self.save()
-
-
-class History(models.Model):
-    time1 = models.DateTimeField(null=True, default=datetime.now())
-    time2 = models.DateTimeField(null=True, default=None)
-    time3 = models.DateTimeField(null=True, default=None)
-    time4 = models.DateTimeField(null=True, default=None)
-
-    sellPoint = models.ForeignKey(SellPoint, null=True, default=None,
-                                  on_delete=models.CASCADE, verbose_name="selling point (shop assistant)")
-    dropOff = models.ForeignKey(DropOff, null=True, default=None,
-                                on_delete=models.CASCADE, verbose_name="cup dropped off")
-    user = models.ForeignKey(CustomUser, null=True, default=None,
-                             on_delete=models.CASCADE, verbose_name="user")
-
-    def set_state_one(self, sellPoint: SellPoint):
-        self.time1 = datetime.now()
-        self.sellPoint = sellPoint
-
-        self.save()
-
-    def set_state_three(self, user: CustomUser):
-        self.time3 = datetime.now()
-        self.user = user
-
-        self.save()
-
-    def set_state_four(self, dropOff: DropOff):
-        self.time4 = datetime.now()
-        self.dropOff = dropOff
-
         self.save()
 
 
@@ -134,12 +103,20 @@ class Cup(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
 
     def sell_cup(self):
-        self.time2 = datetime.now()a
+        self.time2 = datetime.now()
+
+        history = History.objects.create()
+        history.set_state_one(self.time1, self.time2, self.sellPoint, self)
+
         self.save()
 
     def assign_to_user(self, user: CustomUser):
         self.user = user
         self.time3 = datetime.now()
+
+        history = History.objects.filter(cup=self).order_by("-time2").first()
+        history.set_state_two(self.time3, self.user)
+
         self.save()
 
         assert (self.sellPoint is not None)
@@ -150,6 +127,10 @@ class Cup(models.Model):
         self.dropOff = dropOff
         self.sellPoint = None
         self.time4 = datetime.now()
+
+        history = History.objects.filter(cup=self).order_by("-time3").first()
+        history.set_state_three(self.time4, self.dropOff)
+
         self.save()
 
         assert (self.user is not None)
@@ -163,6 +144,42 @@ class Cup(models.Model):
         assert (self.sellPoint is None)
         assert (self.user is None)
         assert (self.dropOff is not None)
+
+
+class History(models.Model):
+    time1 = models.DateTimeField(null=True, default=datetime.now())
+    time2 = models.DateTimeField(null=True, default=None)
+    time3 = models.DateTimeField(null=True, default=None)
+    time4 = models.DateTimeField(null=True, default=None)
+
+    sellPoint = models.ForeignKey(SellPoint, null=True, default=None,
+                                  on_delete=models.CASCADE, verbose_name="selling point (shop assistant)")
+    dropOff = models.ForeignKey(DropOff, null=True, default=None,
+                                on_delete=models.CASCADE, verbose_name="cup dropped off")
+    user = models.ForeignKey(CustomUser, null=True, default=None,
+                             on_delete=models.CASCADE, verbose_name="user")
+    cup = models.ForeignKey(Cup, null=True, default=None,
+                            on_delete=models.CASCADE, verbose_name="cup")
+
+    def set_state_one(self, time1, time2, sellPoint: SellPoint, cup):
+        self.time1 = time1
+        self.time2 = time2
+        self.sellPoint = sellPoint
+        self.cup = cup
+
+        self.save()
+
+    def set_state_two(self, time3, user: CustomUser):
+        self.time3 = time3
+        self.user = user
+
+        self.save()
+
+    def set_state_three(self, time4, dropOff: DropOff):
+        self.time4 = time4
+        self.dropOff = dropOff
+
+        self.save()
 
 
 class Movement(models.Model):
