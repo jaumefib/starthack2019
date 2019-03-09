@@ -793,6 +793,11 @@ body {
     box-shadow: 0 0 50px 0 #11111188;
 }
 
+#qrcode {
+  width:160px;
+  height:160px;
+  margin-top:15px;
+}
 
 html, body {
   height: 100%;
