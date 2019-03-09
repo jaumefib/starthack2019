@@ -29,8 +29,10 @@ class Dashboard(TabsView):
         context = super(Dashboard, self).get_context_data(**kwargs)
         balance = self.request.user.balance
         balance = '{0:,.2f}'.format(balance) + "CHF"
+        cups = models.Cup.objects.filter(user=self.request.user, dropOff=None)
         context.update({
-            "balance": balance
+            "balance": balance,
+            "cups": cups
         })
         return context
 
@@ -114,7 +116,7 @@ class Scan(TabsView):
 
         balance = user.balance
         balance = '{0:,.2f}'.format(balance) + "CHF"
-        return render(request, 'dashboard.html', {"balance": balance})
+        return redirect("dashboard")
 
     def get_current_tabs(self):
         return menu_tabs()

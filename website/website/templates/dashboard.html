@@ -11,5 +11,20 @@
         <h1 style="margin-top: 10px;">{{ balance }}</h1>
     </div>
     <div class="col-sm-8 padding-0 no-style-link">
+        <h3 style="margin-bottom: 25px; margin-top: 10px;">Current loans</h3>
+        <table style="width:100%">
+            <tr>
+                <th>Station</th>
+                <th>Collected time</th>
+                <th>Checked-in time</th>
+            </tr>
+            {% for cup in cups %}
+                <tr>
+                    <td>{{ cup.sellPoint.station.name }}</td>
+                    <td>{{ cup.time1 }}</td>
+                    <td>{{ cup.time2 }}</td>
+                </tr>
+            {% endfor %}
+        </table>
     </div>
 {% endblock %}

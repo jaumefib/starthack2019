@@ -4,6 +4,7 @@ from decimal import Decimal
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
+from django.utils.datetime_safe import datetime
 
 
 class Station(models.Model):
@@ -61,8 +62,10 @@ class Cup(models.Model):
     # Unique id
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     size = models.IntegerField(default=0)
-    timeIn = models.DateTimeField(null=True, default=None)
-    timeEnd = models.DateTimeField(null=True, default=None)
+    time1 = models.DateTimeField(null=True, default=datetime.now())
+    time2 = models.DateTimeField(null=True, default=None)
+    time3 = models.DateTimeField(null=True, default=None)
+    time4 = models.DateTimeField(null=True, default=None)
 
     # Foreign Keys (can be null)
     # SellPoint shouldn't be empty while initializing!!!!!
@@ -70,8 +73,13 @@ class Cup(models.Model):
     dropOff = models.ForeignKey(DropOff, on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
 
+    def sell_cup(self):
+        self.time1 = datetime.now()
+        self.save()
+
     def assign_to_user(self, user: CustomUser):
         self.user = user
+        self.time3 = datetime.now()
         self.save()
 
         assert (self.sellPoint is not None)
@@ -81,6 +89,7 @@ class Cup(models.Model):
     def return_to_dropoff(self, dropOff: DropOff):
         self.dropOff = dropOff
         self.sellPoint = None
+        self.time4 = datetime.now()
         self.save()
 
         assert (self.sellPoint is None)
