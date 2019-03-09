@@ -13,5 +13,6 @@ urlpatterns = [
     url(r'^signup/$', views.SignUp.as_view(), name='signup'),
     url(r'^scan/$', views.Scan.as_view(), name='scan'),
     url(r'^status/$', views.Status.as_view(), name="status"),
+    url(r'^history/$', views.History.as_view(), name="history"),
     url(r'^admin/', admin.site.urls)
 ]

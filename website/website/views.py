@@ -96,6 +96,35 @@ class Status(TabsView):
         return context
 
 
+class History(TabsView):
+    template_name = 'history.html'
+
+    def get_current_tabs(self):
+        return menu_tabs()
+
+    def get_context_data(self, **kwargs):
+        username = self.request.user
+        user = models.CustomUser.objects.filter(username=username).first()
+        context = super(History, self).get_context_data(**kwargs)
+
+        try:
+            if user.role == 1:
+                history = models.History.objects.filter(user=user).all()
+            elif user.role == 2:
+                history = models.History.objects.filter(user=user).all()
+            elif user.role == 3:
+                history = models.History.objects.all()
+            elif user.role == 4:
+                history = models.History.objects.none()
+
+        except:
+            pass
+
+        context.update({
+            'history': history,
+        })
+        return context
+
 class SignUp(TabsView):
     template_name = 'signup.html'
 
