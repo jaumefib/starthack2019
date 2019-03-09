@@ -8,7 +8,7 @@ from website.forms import SignUpForm
 
 
 def menu_tabs():
-    t = []
+    t = [('Scan', reverse('scan'), False)]
     return t
 
 
@@ -54,4 +54,15 @@ class SignUp(TabsView):
         context.update({
             'form': form,
         })
+        return context
+
+
+class Scan(TabsView):
+    template_name = 'dashboard.html'
+
+    def get_current_tabs(self):
+        return menu_tabs()
+
+    def get_context_data(self, **kwargs):
+        context = super(Scan, self).get_context_data(**kwargs)
         return context

@@ -33,13 +33,13 @@ body{
 }
 
 .navbar{
-    color: #444;
+    color: #767676;
     background-color: #fff;
     border-bottom: 1px solid #e5e5e5;
 }
 
 .navbar a{
-    color: #444;
+    color: #767676;
     text-decoration: none;
 }
 
@@ -55,7 +55,7 @@ body{
 
 .navbar .subtitle{
     font-size: 14px;
-    margin: 0 0 12.5px 0;
+    margin: 0;
 }
 
 @media (min-width: 768px) {
@@ -79,15 +79,21 @@ body{
 }
 
 .navbar-logo{
-    height: 51px;
+    height: 100%;
     display: block;
     float: right;
-    margin: 10px 15px 10px 0;
-    padding: 15px 0;
+    margin: 0;
+    padding: 0;
 }
 
 .navbar-logo svg{
     height: 100%;
+}
+
+.navbar-all{
+    margin: 0;
+    padding: 15px 0;
+    height: 50px;
 }
 
 .navbar-text{
@@ -599,6 +605,28 @@ body{
 .content{
     margin-top: 25px;
     margin-bottom: 50px;
+}
+
+.menu-top{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    color: #444;
+    width: 100%;
+}
+
+.menu-top li:first-child{
+    margin: 0 15px 0 0;
+}
+
+.menu-top li{
+    float: left;
+    margin: 0 15px;
+}
+
+.menu-top li a{
+    color: #444;
 }
 
 .footer{

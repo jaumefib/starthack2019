@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'^login/$', auth_views.LoginView.as_view(template_name="login.html", redirect_authenticated_user=True), name='login'),
     url(r'^logout/$', auth_views.LogoutView.as_view(next_page="login"), name='logout'),
     url(r'^signup/$', views.SignUp.as_view(), name='signup'),
+    url(r'^scan/$', views.Scan.as_view(), name='scan'),
     url(r'^admin/', admin.site.urls)
 ]
