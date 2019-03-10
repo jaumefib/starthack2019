@@ -231,22 +231,21 @@ class Scan(TabsView):
         username = request.user
         user = models.CustomUser.objects.filter(username=username).first()
 
-        try:
-            if user.role == 4:
-                cup = models.Cup.objects.filter(id=qrcode)
-                cup.user.increment_balance()
-                cup.return_to_dropoff(user.dropOff)
-                cup.dropOff.increment_current()
-            else:
-                cup = models.Cup.objects.filter(id=qrcode, user=None)
-                if cup:
-                    if user.role == 2:
-                        cup.first().sell_cup()
-                        cup.sellPoint.decrement_current()
-                    else:
-                        cup.first().assign_to_user(user)
-        except:
-            pass
+
+        if user.role == 4:
+            cup = models.Cup.objects.filter(id=qrcode)
+            cup.user.increment_balance()
+            cup.return_to_dropoff(user.dropOff)
+            cup.dropOff.increment_current()
+        else:
+            cup = models.Cup.objects.filter(id=qrcode, user=None)
+            if cup:
+                if user.role == 2:
+                    cup.first().sell_cup()
+                    cup.sellPoint.decrement_current()
+                else:
+                    cup.first().assign_to_user(user)
+
 
         if user.role == 1:
             return redirect("dashboard")
