@@ -876,12 +876,9 @@ body {
 }
 
 
-
 @media (min-width: 1200px) {
-
     .centro {
     }
-
 }
 
 @media (max-width: 480px) {
@@ -902,7 +899,9 @@ body {
         display: none
     }
 
+    /*
     .navbar-text.navbar-right {
         opacity: 0.001
     }
+    */
 }
