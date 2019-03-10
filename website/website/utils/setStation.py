@@ -1,8 +1,15 @@
 import json
+from datetime import datetime, timedelta
 from pprint import pprint
 import uuid
 import names
 from random import randint
+
+
+sellPoints = []
+dropOffs = []
+cups = []
+users = []
 
 
 def abstract_traffic():
@@ -55,13 +62,16 @@ def make_cups():
         for j in range(total_cups):
             if j < total_stations[i]['cups2']:
                 cup = {'model': 'website.Cup',
+                       "pk": str(uuid.uuid4()),
                        'fields': {'sellPoint': i}
                        }
             else:
                 cup = {'model': 'website.Cup',
+                       "pk": str(uuid.uuid4()),
                        'fields': {'dropOff': i}
                        }
             data_out.append(cup)
+            list.append(cups, cup)
             k += 1
 
     with open('../../../dataset/data_cups.json', 'w') as outfile:
@@ -117,6 +127,8 @@ def make_data_results():
         sellPoint['fields']['cups_current'] = cups2
         data_out.append(sellPoint)
 
+        list.append(sellPoints, i)
+
         name = names.get_first_name()
         surname = names.get_last_name()
         username = name.lower() + "." + surname.lower() + "." + str(randint(1, 2019))
@@ -133,6 +145,8 @@ def make_data_results():
         dropOff['fields']['station'] = i
         data_out.append(dropOff)
 
+        list.append(dropOffs, i)
+
     with open('../../../dataset/data_results.json', 'w') as outfile:
         json.dump(data_out, outfile, sort_keys=False, ensure_ascii=False)
 
@@ -148,22 +162,57 @@ def make_users():
             username = name.lower() + "." + surname.lower() + "." + str(randint(1, 2019))
             email = username + "@sbb.ch"
             user = {'model': 'website.CustomUser',
+                    "pk": k,
                    'fields': {"username": username, 'role': 1, "first_name": name, "last_name": surname, "email": email}
                    }
             data_out.append(user)
+
+            list.append(users, user)
+
             k += 1
 
     with open('../../../dataset/data_users.json', 'w') as outfile:
         json.dump(data_out, outfile, sort_keys=False, ensure_ascii=False)
 
 
+def make_history():
+    data_out = []
+    current = datetime.now()-timedelta(hours=1)
+    shifts = [50, 25, 0, 0, 50, 150, 400, 750, 1500, 650, 575, 675, 850, 525, 425, 575, 675, 425, 325, 275, 225, 200, 150, 75]
+    for _ in range(2):
+        shift = current.hour
+        currentshift = randint(int(shifts[shift]/2), shifts[shift])
+        for i in range(currentshift):
+            cup = cups[randint(0, len(cups))]
+            time1 = (current-timedelta(minutes=randint(0, 60)))
+            time1_str = time1.strftime("%Y-%m-%d %H:%M:%S")
+            dropoff = dropOffs[randint(0, len(dropOffs))]
+            time4 = (time1-timedelta(hours=randint(2, 4), minutes=randint(0, 60)))
+            time4_str = time4.strftime("%Y-%m-%d %H:%M:%S")
+            user = users[randint(0, len(users))]["pk"]
+            time3 = (time4-timedelta(hours=randint(0, 1), minutes=randint(0, 60)))
+            time3_str = time3.strftime("%Y-%m-%d %H:%M:%S")
+            sellpoint = sellPoints[randint(0, len(sellPoints))]
+            time2 = (time3-timedelta(hours=randint(0, 1), minutes=randint(0, 60)))
+            time2_str = time2.strftime("%Y-%m-%d %H:%M:%S")
+            history = {'model': 'website.History',
+                       'fields': {"time1": time1_str, "time2": time2_str, "time3": time3_str, "time4": time4_str,
+                                  "sellPoint": sellpoint, "dropOff": dropoff, "user": user, "cup": cup["pk"]}}
+            cup["sellPoint"] = sellpoint
+            data_out.append(history)
+        current -= timedelta(hours=1)
 
-def Main():
+    with open('../../../dataset/data_history.json', 'w') as outfile:
+        json.dump(data_out, outfile, sort_keys=False, ensure_ascii=False)
+
+
+def main():
     abstract_traffic()
     make_data_results()
     make_cups()
     make_users()
+    make_history()
 
 
 if __name__ == '__main__':
-    Main()
+    main()
