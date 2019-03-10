@@ -234,9 +234,10 @@ class Scan(TabsView):
         try:
             if user.role == 4:
                 cup = models.Cup.objects.filter(id=qrcode).first()
-                cup.user.increment_balance()
-                cup.return_to_dropoff(user.dropOff)
-                user.dropOff.increment_current()
+                if not cup.sellPoint is None:
+                    cup.user.increment_balance()
+                    cup.return_to_dropoff(user.dropOff)
+                    user.dropOff.increment_current()
             else:
                 cup = models.Cup.objects.filter(id=qrcode, user=None)
                 if cup:
