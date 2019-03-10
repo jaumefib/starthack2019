@@ -181,20 +181,20 @@ def make_history():
     data_out = []
     current = datetime.now()-timedelta(hours=1)
     shifts = [50, 25, 0, 0, 50, 150, 400, 750, 1500, 650, 575, 675, 850, 525, 425, 575, 675, 425, 325, 275, 225, 200, 150, 75]
-    for _ in range(2):
+    for _ in range(24*7):
         shift = current.hour
         currentshift = randint(int(shifts[shift]/2), shifts[shift])
         for i in range(currentshift):
-            cup = cups[randint(0, len(cups))]
+            cup = cups[randint(0, len(cups) - 1)]
             time1 = (current-timedelta(minutes=randint(0, 60)))
             time1_str = time1.replace(tzinfo=timezone.utc).astimezone(tz=None).strftime("%Y-%m-%d %H:%M:%S")
-            dropoff = dropOffs[randint(0, len(dropOffs))]
+            dropoff = dropOffs[randint(0, len(dropOffs) - 1)]
             time4 = (time1-timedelta(hours=randint(2, 4), minutes=randint(0, 60)))
             time4_str = time4.replace(tzinfo=timezone.utc).astimezone(tz=None).strftime("%Y-%m-%d %H:%M:%S")
-            user = users[randint(0, len(users))]["pk"]
+            user = users[randint(0, len(users) - 1)]["pk"]
             time3 = (time4-timedelta(hours=randint(0, 1), minutes=randint(0, 60)))
             time3_str = time3.replace(tzinfo=timezone.utc).astimezone(tz=None).strftime("%Y-%m-%d %H:%M:%S")
-            sellpoint = sellPoints[randint(0, len(sellPoints))]
+            sellpoint = sellPoints[randint(0, len(sellPoints) - 1)]
             time2 = (time3-timedelta(hours=randint(0, 1), minutes=randint(0, 60)))
             time2_str = time2.replace(tzinfo=timezone.utc).astimezone(tz=None).strftime("%Y-%m-%d %H:%M:%S")
             history = {'model': 'website.History',

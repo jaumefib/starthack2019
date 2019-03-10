@@ -145,7 +145,7 @@ class History(TabsView):
         username = self.request.user
         user = models.CustomUser.objects.filter(username=username).first()
         context = super(History, self).get_context_data(**kwargs)
-        print(user.role)
+
         try:
             if user.role == 1:
                 history = models.History.objects.filter(user=user).all()
@@ -154,7 +154,7 @@ class History(TabsView):
             elif user.role == 3:
                 history = models.History.objects.all()
             elif user.role == 4:
-                history = models.History.objects.none()
+                history = models.History.objects.filter(dropOff=user.dropOff).all()
 
         except:
             pass
@@ -233,16 +233,17 @@ class Scan(TabsView):
 
         try:
             if user.role == 4:
-                cup = models.Cup.objects.filter(id=qrcode)
-                cup.first().user.increment_balance()
-                cup.first().return_to_dropoff(user.dropOff)
-                cup.dropOff.increment_current()
+                cup = models.Cup.objects.filter(id=qrcode).first()
+                if not cup.sellPoint is None:
+                    cup.user.increment_balance()
+                    cup.return_to_dropoff(user.dropOff)
+                    user.dropOff.increment_current()
             else:
                 cup = models.Cup.objects.filter(id=qrcode, user=None)
                 if cup:
                     if user.role == 2:
                         cup.first().sell_cup()
-                        cup.sellPoint.decrement_current()
+                        user.sellPoint.decrement_current()
                     else:
                         cup.first().assign_to_user(user)
         except:

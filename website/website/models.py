@@ -129,7 +129,7 @@ class Cup(models.Model):
         self.sellPoint = None
         self.time4 = timezone.now()
 
-        history = History.objects.filter(cup=self).order_by("-time3").first()
+        history = History.objects.filter(cup=self).order_by("-time2").first()
         history.set_state_three(self.time4, self.dropOff)
 
         self.save()
