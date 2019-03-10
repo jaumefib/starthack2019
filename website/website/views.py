@@ -234,7 +234,7 @@ class Scan(TabsView):
         try:
             if user.role == 4:
                 cup = models.Cup.objects.filter(id=qrcode)
-                cup.user.increment_balance()
+                cup.first().user.increment_balance()
                 cup.first().return_to_dropoff(user.dropOff)
                 cup.dropOff.increment_current()
             else:
