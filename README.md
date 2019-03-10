@@ -5,7 +5,7 @@ The issue is that in Switzerland alone everyday are used around 8 million dispos
 
 We strive to eliminate the giant pile of waste created by disposable coffee cups.
 
-That's why we made a decentral, digital deposit system for reusable coffee cups that will work at any train station, anytime. We want coffee drinkers to be able to return the used cups at drop-off points that automatically and digitally credit back the deposit to the users. We can achive this by identifying the cups using QR-Codes. 
+That's why we made a decentral, digital deposit system for reusable coffee cups that will work at any train station, anytime. We want coffee drinkers to be able to return the used cups at drop-off points that automatically and digitally credit back the deposit to the users. We can achieve this by identifying the cups using QR-Codes. 
 
 Always with the objective in  mind of making rail travel even more environmentally friendly!
 
