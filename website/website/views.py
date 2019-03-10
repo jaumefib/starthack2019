@@ -145,7 +145,7 @@ class History(TabsView):
         username = self.request.user
         user = models.CustomUser.objects.filter(username=username).first()
         context = super(History, self).get_context_data(**kwargs)
-        print(user.role)
+
         try:
             if user.role == 1:
                 history = models.History.objects.filter(user=user).all()
@@ -154,7 +154,7 @@ class History(TabsView):
             elif user.role == 3:
                 history = models.History.objects.all()
             elif user.role == 4:
-                history = models.History.objects.none()
+                history = models.History.objects.filter(dropOff=user.dropOff).all()
 
         except:
             pass
