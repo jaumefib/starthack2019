@@ -105,9 +105,8 @@ class Cup(models.Model):
     def sell_cup(self):
         self.time2 = timezone.now()
 
-        if History.objects.filter(cup=self, time1=self.time1).count() == 0:
-            history = History.objects.create()
-            history.set_state_one(self.time1, self.time2, self.sellPoint, self)
+        history = History.objects.create()
+        history.set_state_one(self.time1, self.time2, self.sellPoint, self)
 
         self.save()
 
