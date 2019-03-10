@@ -248,7 +248,10 @@ class Scan(TabsView):
         except:
             pass
 
-        return redirect("dashboard")
+        if user.role == 1:
+            return redirect("dashboard")
+        else:
+            return redirect("scan")
 
     def get_current_tabs(self):
         return menu_tabs()
