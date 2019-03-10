@@ -4,7 +4,7 @@ from decimal import Decimal
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
-from django.utils.datetime_safe import datetime
+from django.utils import timezone
 
 
 class Station(models.Model):
@@ -91,7 +91,7 @@ class Cup(models.Model):
     # Unique id
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     size = models.IntegerField(default=0)
-    time1 = models.DateTimeField(null=True, default=datetime.now())
+    time1 = models.DateTimeField(null=True, default=timezone.now)
     time2 = models.DateTimeField(null=True, default=None)
     time3 = models.DateTimeField(null=True, default=None)
     time4 = models.DateTimeField(null=True, default=None)
@@ -103,7 +103,7 @@ class Cup(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
 
     def sell_cup(self):
-        self.time2 = datetime.now()
+        self.time2 = timezone.now()
 
         history = History.objects.create()
         history.set_state_one(self.time1, self.time2, self.sellPoint, self)
@@ -112,7 +112,7 @@ class Cup(models.Model):
 
     def assign_to_user(self, user: CustomUser):
         self.user = user
-        self.time3 = datetime.now()
+        self.time3 = timezone.now()
 
         history = History.objects.filter(cup=self).order_by("-time2").first()
         history.set_state_two(self.time3, self.user)
@@ -126,7 +126,7 @@ class Cup(models.Model):
     def return_to_dropoff(self, dropOff: DropOff):
         self.dropOff = dropOff
         self.sellPoint = None
-        self.time4 = datetime.now()
+        self.time4 = timezone.now()
 
         history = History.objects.filter(cup=self).order_by("-time3").first()
         history.set_state_three(self.time4, self.dropOff)
@@ -139,7 +139,7 @@ class Cup(models.Model):
 
     def clean_at_dropoff(self):
         self.user = None
-        self.time1 = datetime.now()
+        self.time1 = timezone.now()
         self.save()
 
         assert (self.sellPoint is None)
@@ -148,7 +148,7 @@ class Cup(models.Model):
 
 
 class History(models.Model):
-    time1 = models.DateTimeField(null=True, default=datetime.now())
+    time1 = models.DateTimeField(null=True, default=timezone.now)
     time2 = models.DateTimeField(null=True, default=None)
     time3 = models.DateTimeField(null=True, default=None)
     time4 = models.DateTimeField(null=True, default=None)

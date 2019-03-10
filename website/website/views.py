@@ -145,7 +145,7 @@ class History(TabsView):
         username = self.request.user
         user = models.CustomUser.objects.filter(username=username).first()
         context = super(History, self).get_context_data(**kwargs)
-
+        print(user.role)
         try:
             if user.role == 1:
                 history = models.History.objects.filter(user=user).all()

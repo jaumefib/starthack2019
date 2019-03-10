@@ -32,7 +32,7 @@
     </head>
     {% block pre_javascript %}{% endblock %}
     {% block navbar %}
-        <nav class="{% if request.path == "/" and not request.user.is_autenthicated %} navbar-home {% endif %}navbar">
+        <nav class="{% if request.path == "/" and not request.user.is_authenticated %}{{ request.path }} navbar-home {% endif %}navbar">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
