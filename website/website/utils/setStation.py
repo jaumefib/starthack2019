@@ -1,4 +1,6 @@
 import json
+
+from django.utils import timezone
 from datetime import datetime, timedelta
 from pprint import pprint
 import uuid
@@ -185,16 +187,16 @@ def make_history():
         for i in range(currentshift):
             cup = cups[randint(0, len(cups))]
             time1 = (current-timedelta(minutes=randint(0, 60)))
-            time1_str = time1.strftime("%Y-%m-%d %H:%M:%S")
+            time1_str = time1.replace(tzinfo=timezone.utc).astimezone(tz=None).strftime("%Y-%m-%d %H:%M:%S")
             dropoff = dropOffs[randint(0, len(dropOffs))]
             time4 = (time1-timedelta(hours=randint(2, 4), minutes=randint(0, 60)))
-            time4_str = time4.strftime("%Y-%m-%d %H:%M:%S")
+            time4_str = time4.replace(tzinfo=timezone.utc).astimezone(tz=None).strftime("%Y-%m-%d %H:%M:%S")
             user = users[randint(0, len(users))]["pk"]
             time3 = (time4-timedelta(hours=randint(0, 1), minutes=randint(0, 60)))
-            time3_str = time3.strftime("%Y-%m-%d %H:%M:%S")
+            time3_str = time3.replace(tzinfo=timezone.utc).astimezone(tz=None).strftime("%Y-%m-%d %H:%M:%S")
             sellpoint = sellPoints[randint(0, len(sellPoints))]
             time2 = (time3-timedelta(hours=randint(0, 1), minutes=randint(0, 60)))
-            time2_str = time2.strftime("%Y-%m-%d %H:%M:%S")
+            time2_str = time2.replace(tzinfo=timezone.utc).astimezone(tz=None).strftime("%Y-%m-%d %H:%M:%S")
             history = {'model': 'website.History',
                        'fields': {"time1": time1_str, "time2": time2_str, "time3": time3_str, "time4": time4_str,
                                   "sellPoint": sellpoint, "dropOff": dropoff, "user": user, "cup": cup["pk"]}}
@@ -208,10 +210,15 @@ def make_history():
 
 def main():
     abstract_traffic()
+    print("Traffic abstracted!")
     make_data_results()
+    print("Date results done!")
     make_cups()
+    print("Cups done!")
     make_users()
+    print("Users done!")
     make_history()
+    print("History done!")
 
 
 if __name__ == '__main__':
