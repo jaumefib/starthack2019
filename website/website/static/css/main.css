@@ -674,6 +674,15 @@ th, td {
      margin: 10px 50px 0 0;
 }
 
+.switch2 {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+    float: right;
+    margin: 10px 25px 0 0;
+}
+
 /* Hide default HTML checkbox */
 .switch input {
   opacity: 0;
@@ -683,6 +692,20 @@ th, td {
 
 .switch input:focus{
     outline: 0px solid transparent;
+}
+
+.button-submit {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #767676;
+  -webkit-transition: .4s;
+  transition: .4s;
+    border: none;
+    color: #FFF;
 }
 
 /* The slider */
